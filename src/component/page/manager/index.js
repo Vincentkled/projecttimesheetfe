@@ -25,7 +25,7 @@ function ManagerPage() {
       });
       setLoading("lagi loading sebentar ya");
   }, [timesheet.status]);
-  
+  const [a, setA] = useState("");
   const updatestatus = (timesheet, status) => {
     axios.post(`http://localhost:8089/api/timesheet/${timesheet.id}`,  {
       employee: timesheet.employee,
