@@ -9,8 +9,14 @@ function ShowDepartment() {
 
 
   useEffect(() => {
-    axios("http://localhost:8089/api/department"
-    )
+    axios({
+      url: "http://localhost:8089/api/department",
+      method: "GET",
+      data: JSON.stringify(department),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
       .then((response) => {
        setDepartment(response.data.results)
         console.log(response);

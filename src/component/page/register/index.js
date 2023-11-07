@@ -6,8 +6,8 @@ function Register() {
     email: "",
     password: "",
     name: "",
-    departmentId: "",
-    managerId: null,
+    department_id: "",
+    manager_id: null,
   });
 
   const [retypePassword, setRetypePassword] = useState("");
@@ -57,13 +57,13 @@ function Register() {
       [name]: value,
     }));
 
-    if (name === "managerId") {
+    if (name === "manager_id") {
       setManagerErrorMessage(""); // Reset error message when manager is selected
     }
   };
 
   const handleSubmit = () => {
-    if (!data.managerId) {
+    if (!data.manager_id) {
       setManagerErrorMessage("Pilih seorang manajer");
       return;
     } else {
@@ -75,9 +75,9 @@ function Register() {
       return;
     }
 
-    if (!data.departmentId) {
+    if (!data.department_id) {
       // Menampilkan pesan kesalahan jika departemen tidak dipilih
-      setDepartmentErrorMessage("Pilih departemen");
+      setDepartmentErrorMessage("Pilih departement");
       return;
     } else {
       // Menghapus pesan kesalahan jika departemen sudah dipilih
@@ -93,7 +93,7 @@ function Register() {
     setPasswordErrorMessage("");
 
     axios({
-      url: "http://localhost:8089/account/save",
+      url: "http://localhost:8089/register",
       method: "POST",
       data: data,
       headers: {
@@ -144,8 +144,8 @@ function Register() {
       />
       <label>Department:</label>
 <select
-  name="departmentId"
-  value={data.departmentId}
+  name="department_id"
+  value={data.department_id}
   onChange={handleChange}
 >
   <option value="">Select Department</option>
@@ -158,7 +158,7 @@ function Register() {
 {departmentErrorMessage && <p>{departmentErrorMessage}</p>}
 
 <label>Manager:</label>
-<select name="managerId" value={data.managerId} onChange={handleChange}>
+<select name="manager_id" value={data.manager_id} onChange={handleChange}>
   <option value="">Select Manager</option>
   {managers.map((manager) => (
     <option key={manager.id} value={manager.id}>

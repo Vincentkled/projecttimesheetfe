@@ -9,8 +9,14 @@ function ShowRole() {
 
 
   useEffect(() => {
-    axios("http://localhost:8089/api/role"
-    )
+    axios({
+      url: "http://localhost:8089/api/role",
+      method: "GET",
+      data: JSON.stringify(role),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
       .then((response) => {
        setRole(response.data.results)
         console.log(response);

@@ -30,8 +30,7 @@ function Login() {
         const token = response.data.token;
 
         // Decode token untuk mendapatkan info pengguna
-        const decoded = jwtDecode(token);
-
+        const decoded = jwtDecode(response.data.token);
         console.log("Received token:", token);
         console.log("Email:", decoded.sub);
         console.log("Name:", decoded.name);

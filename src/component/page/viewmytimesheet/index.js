@@ -49,18 +49,13 @@ function ManagerPage() {
     navigate(0)
   }
 
-  const filterstatus = timesheet.filter(
-    (timesheet) =>
-      timesheet.status === "Pending" &&
-      timesheet.employee.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   const showTable = () => {
     const formatTime = (time) => {
       const options = { hour: '2-digit', minute: '2-digit', hour12: false };
       return new Date(time).toLocaleTimeString(undefined, options);
     };
-    return filterstatus.map((timesheet, i) => {
+    return timesheet.map((timesheet, i) => {
         return (
             <tr key={timesheet.id}>
                 <td>{i + 1}</td>

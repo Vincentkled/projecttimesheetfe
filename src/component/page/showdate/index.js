@@ -9,8 +9,14 @@ function ShowDate() {
 
 
   useEffect(() => {
-    axios("http://localhost:8089/api/dateentity"
-    )
+    axios({
+      url: "http://localhost:8089/api/dateentity",
+      method: "GET",
+      data: JSON.stringify(dateentity),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
       .then((response) => {
        setDateentity(response.data.results)
         console.log(response);

@@ -52,7 +52,7 @@ function Homepage() {
   return (
     <div>
       <h1>Homepage</h1>
-      {/* <Header /> */}
+      <Header />
         {/* <Timesheet /> */}
         {/* <MyTable /> */}
         {/* <ManagerPage /> */}
