@@ -18,7 +18,8 @@ import ShowDate from "./component/page/showdate";
 import ShowDepartment from "./component/page/showdepartment";
 import Login from "./component/page/login";
 import Register from "./component/page/register";
-
+import ViewmyTimesheet from "./component/page/viewmytimesheet";
+import Unauthorized from "./component/page/unauthorized";
 function App() {
   // const count = useSelector((state) => state.counter.value);
   // const dispatch = useDispatch();
@@ -149,15 +150,16 @@ function App() {
           <Route index element={<Homepage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/about" element={<About />} />
-          <Route path="/manager" element={auth=="admin"?<ManagerPage />:<PageNotFound/>} />
+          <Route path="/manager" element={auth=="admin"?<ManagerPage />:<Unauthorized/>} />
           <Route path="/*" element={<PageNotFound />} />
           <Route path="/timesheet" element={<Timesheet />} />
-          <Route path="/date" element={auth=="admin"?<Dateform />:<PageNotFound/>} />
-          <Route path="/department" element={auth=="admin"?<DepartmentForm />:<PageNotFound/>} />
-          <Route path="/showrole" element={auth=="admin"?<ShowRole />:<PageNotFound/>} />
+          <Route path="/date" element={auth=="admin"?<Dateform />:<Unauthorized/>} />
+          <Route path="/department" element={auth=="admin"?<DepartmentForm />:<Unauthorized/>} />
+          <Route path="/showrole" element={auth=="admin"?<ShowRole />:<Unauthorized/>} />
           <Route path="/showdate" element={<ShowDate />} />
           <Route path="/showdepartment" element={<ShowDepartment />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/viewmytimesheet/" element={<ViewmyTimesheet />} />
         </Route>
       </Routes>
     </BrowserRouter>

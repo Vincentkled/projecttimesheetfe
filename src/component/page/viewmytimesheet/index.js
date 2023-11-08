@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Button, FormControl, InputGroup } from "react-bootstrap";
 
-function ManagerPage() {
+function ViewmyTimesheet() {
   const [timesheet, setTimesheet] = useState([{}]);
   const [loading, setLoading] =useState("");
   const [searchTerm, setSearchTerm] = useState("");
@@ -32,10 +32,10 @@ function ManagerPage() {
       setLoading("lagi loading sebentar ya");
   }, [timesheet.status]);
   const [a, setA] = useState("");
-  const updatestatus = (timesheet, status) => {
+  const updatestatus = (timesheet) => {
     axios({
-      url: `http://localhost:8089/api/timesheet/${timesheet.id}`,
-      method: "POST",
+      url: `http://localhost:8089/api/viewmytimesheet/${timesheet.id}`,
+      method: "GET",
       data: {
         employee: timesheet.employee,
         dateentity: timesheet.dateentity,
@@ -43,31 +43,32 @@ function ManagerPage() {
         end_time: timesheet.end_time,
         activity: timesheet.activity,
         attendance: timesheet.attendance,
-        status: status
+        status: timesheet.status
       }
     })
     navigate(0)
   }
 
-
+  const filterstatus = timesheet.filter(
+    (timesheet) =>
+      timesheet.employee?.id === 3
+  );
   const showTable = () => {
     const formatTime = (time) => {
       const options = { hour: '2-digit', minute: '2-digit', hour12: false };
       return new Date(time).toLocaleTimeString(undefined, options);
     };
-    return timesheet.map((timesheet, i) => {
+    return filterstatus.map((timesheet, i) => {
         return (
-            <tr key={timesheet.id}>
+            <tr key={timesheet?.id}>
                 <td>{i + 1}</td>
-                <td>{timesheet.employee.name}</td>
-                <td>{timesheet.dateentity.datetb}</td>
+                <td>{timesheet.employee?.name}</td>
+                <td>{timesheet.dateentity?.datetb}</td>
                 <td>{formatTime(timesheet.start_time)}</td>
                 <td>{formatTime(timesheet.end_time)}</td>
                 <td>{timesheet.activity}</td>
                 <td>{timesheet.attendance}</td>
                 <td>{timesheet.status}</td>
-                <td><Button onClick={() => updatestatus(timesheet, "Approved")} variant="success">Approve</Button>
-                <Button onClick={() => updatestatus(timesheet, "Rejected")} variant="danger"> Reject</Button></td>
             </tr>
         )
     })
@@ -94,7 +95,6 @@ function ManagerPage() {
                 <th>Activity</th>
                 <th>Attendance</th>
                 <th>Status</th>
-                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -105,4 +105,4 @@ function ManagerPage() {
   );
 };
 
-export default ManagerPage;
+export default ViewmyTimesheet;

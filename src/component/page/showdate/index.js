@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Table from "react-bootstrap/Table";
 
-
 function ShowDate() {
   const [dateentity, setDateentity] = useState([{}]);
   const [loading, setLoading] =useState("");
@@ -34,12 +33,13 @@ function ShowDate() {
 
     return dateentity.map((dateentity, i) => {
         const isHolidayText = dateentity.isholiday ? "Holiday" : "Work";
+        const textColor = dateentity.isholiday ? "red" : "white";
         return (
-            <tr key={dateentity.id}>
-                <td>{i + 1}</td>
-                <td>{dateentity.datetb}</td>
-                <td>{dateentity.detail}</td>
-                <td>{isHolidayText}</td>
+            <tr key={dateentity.id} className={{color : textColor}}>
+                <td style={{color : textColor}}>{i + 1}</td>
+                <td style={{color : textColor}}>{dateentity.datetb}</td>
+                <td style={{color : textColor}}>{dateentity.detail}</td>
+                <td style={{color : textColor}}>{isHolidayText}</td>
             </tr>
         )
     })
@@ -47,13 +47,13 @@ function ShowDate() {
   return (
     <div>
     <p style={{color:"cyan"}}><b>{loading}</b></p>
-    <Table striped bordered hover>
+    <Table striped bordered hover variant="dark">
         <thead>
             <tr>    
-                <th>#</th>
-                <th>Date</th>
-                <th>Detail</th>
-                <th>Keterangan</th>
+                <th style={{color : "cyan"}}>#</th>
+                <th style={{color : "cyan"}}>Date</th>
+                <th style={{color : "cyan"}}>Detail</th>
+                <th style={{color : "cyan"}}>Keterangan</th>
             </tr>
         </thead>
         <tbody>

@@ -11,11 +11,9 @@ const Layout = () => {
           <li>
             <Link to="/">Homepage</Link>
           </li>
-          {auth == "admin" ? (
             <li>
               <Link to="/timesheet">Input Timesheet</Link>
             </li>
-          ) : null}
           {auth == "admin" ? (
             <li>
               <Link to="/manager">Timesheet Approval</Link>
@@ -37,16 +35,19 @@ const Layout = () => {
           <li>
             <Link to="/showdepartment">Show Department</Link>
           </li>
-          {auth == "admin" ? (
+          {/* {auth == "admin" ? (
             <li>
               <Link to="/showrole">ShowRole</Link>
             </li>
-          ) : null}
+          ) : null} */}
           <li>
             <Link to="/register">Register</Link>
           </li>
           <li>
             <Link to="/about">About</Link>
+          </li>
+          <li>
+            <Link to="/viewmytimesheet">View My Timesheet</Link>
           </li>
         </ul>
       </nav>
