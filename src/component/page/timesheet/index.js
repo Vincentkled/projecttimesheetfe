@@ -3,7 +3,6 @@ import axios from "axios";
 
 const TimesheetForm = () => {
 
-  let x = localStorage.getItem("Name")
   const [dateentitys, setDateentitys] = useState([{
   }]);
   useEffect (() => {
@@ -23,7 +22,7 @@ const TimesheetForm = () => {
   },[]);
   const [formData, setFormData] = useState({
     employee: {
-      id: null,
+      id: localStorage.getItem("Id"),
     },
     dateentity: {
       id: null,
@@ -118,13 +117,13 @@ const TimesheetForm = () => {
       <h1>Timesheet Form</h1>
       <form onSubmit={handleSubmit}>
         <div className="white-text">
-          <label>Employee ID</label>
           <input
             type="text"
             name="employee"
             value={formData.employee.id}
             onChange={handleChange}
-            required
+            disabled
+            hidden
           />
         </div>
         <div className="white-text">

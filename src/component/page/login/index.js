@@ -36,12 +36,14 @@ function Login() {
         console.log("Email:", decoded.sub);
         console.log("Name:", decoded.name);
         console.log("Role:", decoded.role);
+        console.log("Id", decoded.id)
 
         // Simpan data ke localStorage
         localStorage.setItem("Token", token);
         localStorage.setItem("Email", decoded.sub);
         localStorage.setItem("Name", decoded.name);
         localStorage.setItem("Role", decoded.role);
+        localStorage.setItem("Id", decoded.id);
         navigate("/timesheet")
       })
       .catch((error) => {
