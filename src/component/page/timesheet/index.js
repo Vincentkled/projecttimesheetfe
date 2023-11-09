@@ -144,7 +144,7 @@ const TimesheetForm = () => {
         <div className="white-text">
           <label>Start Time</label>
           <input
-            type="text"
+            type="datetime-local"
             name="start_time"
             value={formData.start_time}
             onChange={handleChange}
@@ -155,7 +155,7 @@ const TimesheetForm = () => {
         <div className="white-text">
           <label>End Time</label>
           <input
-            type="text"
+            type="datetime-local"
             name="end_time"
             value={formData.end_time}
             onChange={handleChange}
