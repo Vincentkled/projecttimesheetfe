@@ -1,37 +1,61 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 const TimesheetForm = () => {
+
+  let x = localStorage.getItem("Name")
+  const [dateentitys, setDateentitys] = useState([{
+  }]);
+  useEffect (() => {
+    axios({
+      url: "http://localhost:8089/api/dateentity",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    }).then((response)=>{
+      // console.log(response.data.results)
+      setDateentitys(response.data.results)
+      console.log(dateentitys)
+    }).catch((error)=>{
+      console.log(error)
+    });
+  },[]);
   const [formData, setFormData] = useState({
     employee: {
-      id: ""
+      id: null,
     },
     dateentity: {
-      id: ""
+      id: null,
     },
     start_time: "",
     end_time: "",
     activity: "",
     attendance: "",
-    status: "Pending"
+    status: "Pending",
   });
+
+  const checkData = () =>{
+    console.log(dateentitys)
+  }
 
   let resetForm = () => {
     setFormData({
       employee: {
-        id: ""
+        id: "",
       },
       dateentity: {
-        id: ""
+        id: "",
       },
       start_time: "",
       end_time: "",
       activity: "",
       attendance: "",
-      status: "Pending"
+      status: "Pending",
     });
   };
 
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     let object = {
@@ -41,7 +65,7 @@ const TimesheetForm = () => {
       end_time: formData.end_time,
       activity: formData.activity,
       attendance: formData.attendance,
-      status: formData.status
+      status: formData.status,
     };
 
     axios({
@@ -49,12 +73,12 @@ const TimesheetForm = () => {
       method: "POST",
       data: JSON.stringify(object),
       headers: {
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     })
       .then((response) => {
         setFormData({
-          ...formData
+          ...formData,
         });
         console.log(response);
         alert("Timesheet berhasil di input");
@@ -71,20 +95,20 @@ const TimesheetForm = () => {
       setFormData({
         ...formData,
         employee: {
-          id: value
-        }
+          id: value,
+        },
       });
     } else if (name === "dateentity") {
       setFormData({
         ...formData,
         dateentity: {
-          id: value
-        }
+          id: value,
+        },
       });
     } else {
       setFormData({
         ...formData,
-        [name]: value
+        [name]: value,
       });
     }
   };
@@ -104,14 +128,19 @@ const TimesheetForm = () => {
           />
         </div>
         <div className="white-text">
-          <label>Dateentity ID</label>
-          <input
-            type="text"
+          <label>Select Date </label>
+          <select
             name="dateentity"
             value={formData.dateentity.id}
             onChange={handleChange}
-            required
-          />
+          >
+            <option disabled>Select Date </option>
+            {dateentitys.map((x) => (
+              <option value={x.id}  key={x.id}>
+                {x.datetb}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="white-text">
           <label>Start Time</label>
@@ -153,7 +182,9 @@ const TimesheetForm = () => {
             onChange={handleChange}
             required
           >
-            <option disabled value="">Pilih Kehadiran</option>
+            <option disabled value="">
+              Pilih Kehadiran
+            </option>
             <option value="Present">Present</option>
             <option value="Absence">Absence</option>
             <option value="Sick">Sick</option>
@@ -173,6 +204,8 @@ const TimesheetForm = () => {
         <button type="submit" className="btn btn-primary">
           Save Timesheet
         </button>
+        
+
       </form>
     </div>
   );

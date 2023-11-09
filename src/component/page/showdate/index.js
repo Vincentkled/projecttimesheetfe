@@ -36,9 +36,9 @@ function ShowDate() {
         const textColor = dateentity.isholiday ? "red" : "white";
         return (
             <tr key={dateentity.id} className={{color : textColor}}>
-                <td style={{color : textColor}}>{i + 1}</td>
-                <td style={{color : textColor}}>{dateentity.datetb}</td>
-                <td style={{color : textColor}}>{dateentity.detail}</td>
+                <td>{i + 1}</td>
+                <td>{dateentity.datetb}</td>
+                <td>{dateentity.detail}</td>
                 <td style={{color : textColor}}>{isHolidayText}</td>
             </tr>
         )
