@@ -1,13 +1,14 @@
 import { useState } from "react";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [data, setData] = useState({
     email: "",
     password: "",
   });
-
+  const navigate = useNavigate ();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData((prevState) => ({
@@ -41,6 +42,7 @@ function Login() {
         localStorage.setItem("Email", decoded.sub);
         localStorage.setItem("Name", decoded.name);
         localStorage.setItem("Role", decoded.role);
+        navigate("/timesheet")
       })
       .catch((error) => {
         console.log(error);

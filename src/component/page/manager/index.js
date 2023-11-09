@@ -9,7 +9,14 @@ function ManagerPage() {
   const [timesheet, setTimesheet] = useState([{}]);
   const [loading, setLoading] =useState("");
   const [searchTerm, setSearchTerm] = useState("");
-
+  const [data, setData] = useState ([{
+    email: localStorage.getItem("Email"),
+    name: localStorage.getItem("Name"),
+    role: localStorage.getItem("Role")
+  }]);
+  useEffect (() => {
+    console.log(data[0].role)
+  },[])
   const dispatch = useDispatch();
   const navigate = useNavigate();
   useEffect(() => {
@@ -31,7 +38,7 @@ function ManagerPage() {
       });
       setLoading("lagi loading sebentar ya");
   }, [timesheet.status]);
-  const [a, setA] = useState("");
+  
   const updatestatus = (timesheet, status) => {
     axios({
       url: `http://localhost:8089/api/timesheet/${timesheet.id}`,
@@ -61,6 +68,7 @@ function ManagerPage() {
       return new Date(time).toLocaleTimeString(undefined, options);
     };
     return filterstatus.map((timesheet, i) => {
+      const textColor = timesheet.attendance ? "white" : "yellow";
         return (
             <tr key={timesheet.id}>
                 <td>{i + 1}</td>
@@ -69,7 +77,7 @@ function ManagerPage() {
                 <td>{formatTime(timesheet.start_time)}</td>
                 <td>{formatTime(timesheet.end_time)}</td>
                 <td>{timesheet.activity}</td>
-                <td>{timesheet.attendance}</td>
+                <td style={{color : textColor}}>{timesheet.attendance}</td>
                 <td>{timesheet.status}</td>
                 <td><Button onClick={() => updatestatus(timesheet, "Approved")} variant="success">Approve</Button>
                 <Button onClick={() => updatestatus(timesheet, "Rejected")} variant="danger"> Reject</Button></td>

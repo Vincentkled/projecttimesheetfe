@@ -50,10 +50,10 @@ function ShowDate() {
     <Table striped bordered hover variant="dark">
         <thead>
             <tr>    
-                <th style={{color : "cyan"}}>#</th>
-                <th style={{color : "cyan"}}>Date</th>
-                <th style={{color : "cyan"}}>Detail</th>
-                <th style={{color : "cyan"}}>Keterangan</th>
+                <th style={{color : "cyan"}}><b>#</b></th>
+                <th style={{color : "cyan"}}><b>Date</b></th>
+                <th style={{color : "cyan"}}><b>Detail</b></th>
+                <th style={{color : "cyan"}}><b>Keterangan</b></th>
             </tr>
         </thead>
         <tbody>

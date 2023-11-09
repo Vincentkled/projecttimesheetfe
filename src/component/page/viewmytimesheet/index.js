@@ -3,15 +3,15 @@ import axios from "axios";
 import Table from "react-bootstrap/Table";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Button, FormControl, InputGroup } from "react-bootstrap";
+import { FormControl, InputGroup } from "react-bootstrap";
 
 function ViewmyTimesheet() {
   const [timesheet, setTimesheet] = useState([{}]);
   const [loading, setLoading] =useState("");
   const [searchTerm, setSearchTerm] = useState("");
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  // const dispatch = useDispatch();
+  // const navigate = useNavigate();
   useEffect(() => {
     axios({
       url: "http://localhost:8089/api/timesheet",
@@ -31,23 +31,7 @@ function ViewmyTimesheet() {
       });
       setLoading("lagi loading sebentar ya");
   }, [timesheet.status]);
-  const [a, setA] = useState("");
-  const updatestatus = (timesheet) => {
-    axios({
-      url: `http://localhost:8089/api/viewmytimesheet/${timesheet.id}`,
-      method: "GET",
-      data: {
-        employee: timesheet.employee,
-        dateentity: timesheet.dateentity,
-        start_time: timesheet.start_time,
-        end_time: timesheet.end_time,
-        activity: timesheet.activity,
-        attendance: timesheet.attendance,
-        status: timesheet.status
-      }
-    })
-    navigate(0)
-  }
+ 
 
   const filterstatus = timesheet.filter(
     (timesheet) =>
@@ -76,14 +60,6 @@ function ViewmyTimesheet() {
   return (
     <div>
     <p style={{color:"cyan"}}><b>{loading}</b></p>
-    <InputGroup className="mb-3">
-        <FormControl
-          placeholder="Search by Employee Name"
-          aria-label="Search"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </InputGroup>
     <Table striped bordered hover variant="dark">
         <thead>
             <tr>    

@@ -27,7 +27,15 @@ function App() {
   //   email: "",
   //   password: "",
   // });
-  const auth = "admin"
+  const [data, setData] = useState ([{
+    email: localStorage.getItem("Email"),
+    name: localStorage.getItem("Name"),
+    role: localStorage.getItem("Role")
+  }]);
+  const auth = data[0].role;
+  useEffect (() => {
+    console.log(data[0].role)
+  },[])
   const [inputValue, setInputValue] = useState(0);
   const [people, setPeople] = useState([]);
 

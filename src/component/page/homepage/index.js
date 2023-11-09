@@ -7,6 +7,8 @@ import DepartmentForm from "../department";
 import TimesheetApproval from "../manager";
 import ManagerPage from "../manager";
 import Header from "../header";
+import Login from "../login";
+import Register from "../register";
 
 function Homepage() {
     // const [namecontent, setNamecontent] = useState([]);
@@ -52,7 +54,7 @@ function Homepage() {
   return (
     <div>
       <h1>Homepage</h1>
-      <Header />
+      {/* <Header /> */}
         {/* <Timesheet /> */}
         {/* <MyTable /> */}
         {/* <ManagerPage /> */}
@@ -60,6 +62,8 @@ function Homepage() {
         {/* <Dateform /> */}
         {/* <DepartmentForm /> */}
         {/* <TimesheetApproval /> */}
+        <Login />
+        <Register />
     </div>
   );
 }
