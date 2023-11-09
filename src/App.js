@@ -158,12 +158,12 @@ function App() {
           <Route index element={<Homepage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/about" element={<About />} />
-          <Route path="/manager" element={auth=="admin"?<ManagerPage />:<Unauthorized/>} />
+          <Route path="/manager" element={<ManagerPage />} />
           <Route path="/*" element={<PageNotFound />} />
           <Route path="/timesheet" element={<Timesheet />} />
-          <Route path="/date" element={auth=="admin"?<Dateform />:<Unauthorized/>} />
-          <Route path="/department" element={auth=="admin"?<DepartmentForm />:<Unauthorized/>} />
-          <Route path="/showrole" element={auth=="admin"?<ShowRole />:<Unauthorized/>} />
+          <Route path="/date" element={<Dateform />}/>
+          <Route path="/department" element={<DepartmentForm />} />
+          <Route path="/showrole" element={<ShowRole />} />
           <Route path="/showdate" element={<ShowDate />} />
           <Route path="/showdepartment" element={<ShowDepartment />} />
           <Route path="/register" element={<Register />} />

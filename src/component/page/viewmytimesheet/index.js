@@ -32,10 +32,11 @@ function ViewmyTimesheet() {
       setLoading("lagi loading sebentar ya");
   }, [timesheet.status]);
  
-
+  let x = localStorage.getItem("Name")
+  console.log(x);
   const filterstatus = timesheet.filter(
     (timesheet) =>
-      timesheet.employee?.id === 3
+      timesheet.employee?.name === x.toString()
   );
   const showTable = () => {
     const formatTime = (time) => {
