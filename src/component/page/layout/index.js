@@ -3,6 +3,12 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Login from "../login";
 import Register from "../register";
+import { admin, user } from "../lib/navbar";
+import Container from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar"
+import "./index.css";
+
 const Layout = () => {
     const navigate = useNavigate();
     const [data, setData] = useState ([{
@@ -32,43 +38,26 @@ const Layout = () => {
   {if(x == "admin") {
     return (
       <div>
-        <nav>
-        <ul>
-          <li>
-            <Link to="/">Homepage</Link>
-          </li>
-            <li>
-              <Link to="/timesheet">Input Timesheet</Link>
-            </li>
-            <li>
-              <Link to="/manager">Timesheet Approval</Link>
-            </li>
-            <li>
-              <Link to="/date">Create Date Table</Link>
-            </li>
-          <li>
-            <Link to="/showdate">Show Date</Link>
-          </li>
-            <li>
-              <Link to="/department">Create Department</Link>
-            </li>
-          <li>
-            <Link to="/showdepartment">Show Department</Link>
-          </li>
-            <li>
-              <Link to="/showrole">ShowRole</Link>
-            </li>
-          <li>
-            <Link to="/about">About</Link>
-          </li>
-          <li>
-            <Link to="/viewmytimesheet">View My Timesheet</Link>
-          </li>
-                <li>
-            <Link to="/" onClick={clearLocal}>Logout</Link>
-          </li>
-        </ul>
-      </nav>
+       <Navbar expand="lg" className="bg-body-tertiary">
+				<Container>
+					<Navbar.Toggle aria-controls="basic-navbar-nav" />
+					<Navbar.Collapse id="basic-navbar-nav">
+						<Nav className="sidebar">
+							{admin.map((link, index) => (
+							<Link
+              className="mx-2"
+              key={index}
+              to={link.hash}
+              
+            >
+              {link.page}
+            </Link>
+							))}
+              <Link to="/" onClick={clearLocal}>Logout</Link>
+						</Nav>
+					</Navbar.Collapse>
+				</Container>
+			</Navbar>
 
       <Outlet />
       </div>
@@ -76,34 +65,26 @@ const Layout = () => {
   } else if (x == "user"){
     return (
       <div>
-      <nav>
-      <ul>
-        <li>
-          <Link to="/">Homepage</Link>
-        </li>
-          <li>
-            <Link to="/timesheet">Input Timesheet</Link>
-          </li>
-        <li>
-          <Link to="/showdate">Show Date</Link>
-        </li>
-        <li>
-          <Link to="/showdepartment">Show Department</Link>
-        </li>
-          <li>
-            <Link to="/showrole">ShowRole</Link>
-          </li>
-        <li>
-          <Link to="/about">About</Link>
-        </li>
-        <li>
-          <Link to="/viewmytimesheet">View My Timesheet</Link>
-        </li>
-              <li>
-          <Link to="/" onClick={clearLocal}>Logout</Link>
-        </li>
-      </ul>
-    </nav>
+     <Navbar expand="lg" className="bg-body-tertiary">
+				<Container>
+					<Navbar.Toggle aria-controls="basic-navbar-nav" />
+					<Navbar.Collapse id="basic-navbar-nav">
+						<Nav className="me-auto">
+							{user.map((link, index) => (
+							<Link
+              className="mx-2"
+              key={index}
+              to={link.hash}
+              
+            >
+              {link.page}
+            </Link>
+							))}
+              <Link to="/" onClick={clearLocal}>Logout</Link>
+						</Nav>
+					</Navbar.Collapse>
+				</Container>
+			</Navbar>
 
     <Outlet />
     </div>

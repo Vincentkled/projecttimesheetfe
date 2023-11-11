@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import axios from "axios";
+import Modal from "react-bootstrap/Modal";
+import Button from 'react-bootstrap/Button';
 
 const DepartmentForm = () => {
   const [formData, setFormData] = useState({
     id: "",
     name: "",
   });
-
+  const [show, setShow] = useState(true);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -46,7 +48,22 @@ const DepartmentForm = () => {
 
 
   return (
-    <form onSubmit={handleSubmit}>
+    <>
+    <Button variant="primary" onClick={() => setShow(true)}>
+      Create Department
+    </Button>
+    <Modal
+      show={show}
+      onHide={() => setShow(false)}
+      dialogClassName="modal-90w"
+      aria-labelledby="example-custom-modal-styling-title"
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="example-custom-modal-styling-title">
+        Create Department
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body> <form onSubmit={handleSubmit}>
       <div>
         <label htmlFor="name">Name Departement </label>
         <input
@@ -57,8 +74,10 @@ const DepartmentForm = () => {
           onChange={handleInputChange}
         />
       </div>
-      <button type="submit">Create</button>
-    </form>
+      <Button type="submit">Create</Button>
+    </form></Modal.Body>
+    </Modal>
+  </>
   );
 };
 

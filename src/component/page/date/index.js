@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+import Modal from "react-bootstrap/Modal";
+import Button from 'react-bootstrap/Button';
 
 const Dateform = () => {
   const [formData, setFormData] = useState({
@@ -8,7 +10,10 @@ const Dateform = () => {
     detail: "",
     isholiday: false,
   });
+  const [show, setShow] = useState(true);
 
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     const inputValue = type === "checkbox" ? checked : value;
@@ -50,7 +55,22 @@ const Dateform = () => {
   };
   
   return (
-    <form onSubmit={handleSubmit}>
+    <>
+    <Button variant="primary" onClick={() => setShow(true)}>
+    Create Schedule
+    </Button>
+    <Modal
+      show={show}
+      onHide={() => setShow(false)}
+      dialogClassName="modal-90w"
+      aria-labelledby="example-custom-modal-styling-title"
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="example-custom-modal-styling-title">
+          Create Schedule
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body> <form onSubmit={handleSubmit}>
       <div>
         <input
           type="text"
@@ -87,8 +107,10 @@ const Dateform = () => {
           onChange={handleInputChange}
         />
       </div>
-      <button type="submit">Submit</button>
-    </form>
+      <Button type="submit">Submit</Button>
+    </form></Modal.Body>
+    </Modal>
+  </>
   );
 };
 

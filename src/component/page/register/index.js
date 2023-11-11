@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Modal from "react-bootstrap/Modal";
+import Button from 'react-bootstrap/Button';
 
 function Register() {
   const [data, setData] = useState({
@@ -9,7 +11,7 @@ function Register() {
     department_id: "",
     manager_id: null,
   });
-
+  const [show, setShow] = useState(false);
   const [retypePassword, setRetypePassword] = useState("");
   const [departments, setDepartments] = useState([]);
   const [managers, setManagers] = useState([]);
@@ -109,7 +111,22 @@ function Register() {
   };
 
   return (
-    <div
+    <>
+    <Button className="mt-2" variant="primary" onClick={() => setShow(true)}>
+      Don't Have an Account ? Regist Here!
+    </Button>
+    <Modal
+      show={show}
+      onHide={() => setShow(false)}
+      dialogClassName="modal-90w"
+      aria-labelledby="example-custom-modal-styling-title"
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="example-custom-modal-styling-title">
+          Register
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body> <div
       style={{ display: "flex", flexDirection: "column", maxWidth: "300px" }}
     >
       <h2>Register</h2>
@@ -169,8 +186,10 @@ function Register() {
 {managerErrorMessage && <p>{managerErrorMessage}</p>}
 
 
-      <button onClick={handleSubmit}>Daftar</button>
-    </div>
+      <Button onClick={handleSubmit} className="mt-3">Register</Button>
+    </div></Modal.Body>
+    </Modal>
+  </>
   );
 }
 

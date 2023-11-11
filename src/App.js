@@ -20,6 +20,7 @@ import Login from "./component/page/login";
 import Register from "./component/page/register";
 import ViewmyTimesheet from "./component/page/viewmytimesheet";
 import Unauthorized from "./component/page/unauthorized";
+import "bootstrap/dist/css/bootstrap.min.css";
 function App() {
   // const count = useSelector((state) => state.counter.value);
   // const dispatch = useDispatch();
@@ -27,15 +28,8 @@ function App() {
   //   email: "",
   //   password: "",
   // });
-  const [data, setData] = useState ([{
-    email: localStorage.getItem("Email"),
-    name: localStorage.getItem("Name"),
-    role: localStorage.getItem("Role")
-  }]);
-  const auth = data[0].role;
-  useEffect (() => {
-    console.log(data[0].role)
-  },[])
+
+
   const [inputValue, setInputValue] = useState(0);
   const [people, setPeople] = useState([]);
 
@@ -121,7 +115,7 @@ function App() {
     //     console.log(error);
     //   });
   };
-
+  let x = localStorage.getItem("Role");
   return (
     <div className="App">
     <div>
@@ -158,12 +152,12 @@ function App() {
           <Route index element={<Homepage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/about" element={<About />} />
-          <Route path="/manager" element={<ManagerPage />} />
+          <Route path="/manager" element={x=="admin"?<ManagerPage />:<Unauthorized/>} />
           <Route path="/*" element={<PageNotFound />} />
           <Route path="/timesheet" element={<Timesheet />} />
-          <Route path="/date" element={<Dateform />}/>
-          <Route path="/department" element={<DepartmentForm />} />
-          <Route path="/showrole" element={<ShowRole />} />
+          <Route path="/date" element={x=="admin"?<Dateform />:<Unauthorized/>} />
+          <Route path="/department" element={x=="admin"?<DepartmentForm />:<Unauthorized/>} />
+          <Route path="/showrole" element={x=="admin"?<ShowRole />:<Unauthorized/>} />
           <Route path="/showdate" element={<ShowDate />} />
           <Route path="/showdepartment" element={<ShowDepartment />} />
           <Route path="/register" element={<Register />} />

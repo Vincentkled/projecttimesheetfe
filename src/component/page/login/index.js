@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
@@ -44,7 +44,7 @@ function Login() {
         localStorage.setItem("Name", decoded.name);
         localStorage.setItem("Role", decoded.role);
         localStorage.setItem("Id", decoded.id);
-        navigate("/timesheet")
+        navigate(0)
       })
       .catch((error) => {
         console.log(error);
@@ -61,7 +61,8 @@ function Login() {
       type="text"
       value={data.email}
       onChange={handleChange}
-      className="form-control"
+      className="container"
+      style={{ maxWidth: "300px", marginLeft:"30px", marginTop:"15px", marginBottom:"-3px" }} 
     />
   </div>
   <div className="mb-3">
@@ -71,7 +72,8 @@ function Login() {
       type="password"
       value={data.password}
       onChange={handleChange}
-      className="form-control"
+      className="container"
+      style={{ maxWidth: "300px", marginLeft:"3px",marginTop:"-10px" }} 
     />
   </div>
   <button onClick={handleSubmit} className="btn btn-primary">

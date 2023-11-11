@@ -61,7 +61,7 @@ function ViewmyTimesheet() {
   return (
     <div>
     <p style={{color:"cyan"}}><b>{loading}</b></p>
-    <Table striped bordered hover variant="dark">
+    <Table striped bordered hover>
         <thead>
             <tr>    
                 <th>#</th>

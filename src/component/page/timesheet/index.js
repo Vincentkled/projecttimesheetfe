@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Form from 'react-bootstrap/Form';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 
 const TimesheetForm = () => {
 
@@ -33,6 +36,11 @@ const TimesheetForm = () => {
     attendance: "",
     status: "Pending",
   });
+
+  const [show, setShow] = useState(true);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const checkData = () =>{
     console.log(dateentitys)
@@ -112,70 +120,84 @@ const TimesheetForm = () => {
     }
   };
 
-  return (
-    <div className="container">
-      <h1>Timesheet Form</h1>
-      <form onSubmit={handleSubmit}>
-        <div className="white-text">
-          <input
-            type="text"
-            name="employee"
-            value={formData.employee.id}
-            onChange={handleChange}
-            disabled
-            hidden
-          />
-        </div>
-        <div className="white-text">
-          <label>Select Date </label>
-          <select
-            name="dateentity"
-            value={formData.dateentity.id}
-            onChange={handleChange}
-          >
-            <option disabled>Select Date </option>
-            {dateentitys.map((x) => (
-              <option value={x.id}  key={x.id}>
-                {x.datetb}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="white-text">
-          <label>Start Time</label>
-          <input
-            type="datetime-local"
-            name="start_time"
-            value={formData.start_time}
-            onChange={handleChange}
-            placeholder="yyyy-MM-dd(T)HH:mm:ss"
-            required
-          />
-        </div>
-        <div className="white-text">
-          <label>End Time</label>
-          <input
-            type="datetime-local"
-            name="end_time"
-            value={formData.end_time}
-            onChange={handleChange}
-            placeholder="yyyy-MM-dd(T)HH:mm:ss"
-            required
-          />
-        </div>
-        <div className="white-text">
-          <label>Activity</label>
-          <input
-            type="text"
-            name="activity"
-            value={formData.activity}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="white-text">
-          <label>Attendance</label>
-          <select
+  return (<>
+    <Button variant="primary" onClick={handleShow}>
+      Input Timesheet
+    </Button>
+
+    <Modal show={show} onHide={handleClose}>
+      <Modal.Header closeButton>
+        <Modal.Title>Timesheet Form</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form onSubmit={handleSubmit}>
+          {/* Employee */}
+          <Form.Group className="mb-3 cons">
+            <Form.Control
+              type="text"
+              name="employee"
+              value={formData.employee.id}
+              onChange={handleChange}
+              disabled
+              hidden
+            ></Form.Control>
+          </Form.Group>
+
+          {/* Date */}
+          <Form.Group className="mb-3">
+            <Form.Label>Select Date</Form.Label>
+            <Form.Select
+              name="dateentity"
+              value={formData.dateentity.id}
+              onChange={handleChange}
+            >
+              <option disabled>Select Date </option>
+              {dateentitys.map((x) => (
+                <option value={x.id} key={x.id}>
+                  {x.datetb}
+                </option>
+              ))}
+            </Form.Select>
+          </Form.Group>
+          {/* Start Time */}
+          <Form.Group className="mb-3">
+            <Form.Label>Start Time</Form.Label>
+            <Form.Control
+              type="datetime-local"
+              name="start_time"
+              value={formData.start_time}
+              onChange={handleChange}
+              placeholder="yyyy-MM-dd(T)HH:mm:ss"
+              required
+            />
+          </Form.Group>
+          {/* End Time */}
+          <Form.Group className="mb-3">
+            <Form.Label>End Time</Form.Label>
+            <Form.Control
+              type="datetime-local"
+              name="end_time"
+              value={formData.end_time}
+              onChange={handleChange}
+              placeholder="yyyy-MM-dd(T)HH:mm:ss"
+              required
+            />
+          </Form.Group>
+          {/* Activity */}
+          <Form.Group className="mb-3">
+            <Form.Label>Activity</Form.Label>
+            <Form.Control
+              type="text"
+              name="activity"
+              value={formData.activity}
+              onChange={handleChange}
+              required
+            />
+          </Form.Group>
+          {/* Attendance */}
+          <Form.Group className="mb-3">
+            <Form.Label>Attendance</Form.Label>
+            <select
             name="attendance"
             value={formData.attendance}
             onChange={handleChange}
@@ -189,24 +211,28 @@ const TimesheetForm = () => {
             <option value="Sick">Sick</option>
             <option value="Leave">Leave</option>
           </select>
-        </div>
-        <div className="white-text">
-          <input
-            type="text"
-            name="status"
-            value={formData.status}
-            onChange={handleChange}
-            required
-            hidden
-          />
-        </div>
-        <button type="submit" className="btn btn-primary">
-          Save Timesheet
-        </button>
-        
-
-      </form>
-    </div>
+          </Form.Group>
+          {/* Status */}
+          <Form.Group className="mb-3">
+            <Form.Control
+              type="text"
+              name="status"
+              value={formData.status}
+              onChange={handleChange}
+              required
+              hidden
+            />
+          </Form.Group>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button type="submit" variant="primary">
+            Save Timesheet
+          </Button>
+        </Form>
+      </Modal.Body>
+    </Modal>
+  </>
   );
 };
 
