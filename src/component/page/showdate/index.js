@@ -33,7 +33,7 @@ function ShowDate() {
 
     return dateentity.map((dateentity, i) => {
         const isHolidayText = dateentity.isholiday ? "Holiday" : "Work";
-        const textColor = dateentity.isholiday ? "red" : "white";
+        const textColor = dateentity.isholiday ? "red" : "black";
         return (
             <tr key={dateentity.id} className={{color : textColor}}>
                 <td>{i + 1}</td>
@@ -47,7 +47,7 @@ function ShowDate() {
   return (
     <div>
     <p style={{color:"cyan"}}><b>{loading}</b></p>
-    <Table striped bordered hover variant="dark">
+    <Table striped bordered hover>
         <thead>
             <tr>    
                 <th style={{color : "cyan"}}><b>#</b></th>

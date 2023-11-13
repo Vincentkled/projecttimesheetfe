@@ -11,7 +11,8 @@ import Login from "../login";
 import Register from "../register";
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import zoro from "./zoroop.jpg"
+import zoro from "./amartek.jpg"
+import { Link } from "react-router-dom";
 
 function Homepage() {
     // const [namecontent, setNamecontent] = useState([]);
@@ -54,9 +55,9 @@ function Homepage() {
         
 
 
-  // return (
-    // <div>
-    //   <h1>Homepage</h1>
+  return (
+    <div>
+      <h1>Homepage</h1>
       {/* <Header /> */}
         {/* <Timesheet /> */}
         {/* <MyTable /> */}
@@ -67,21 +68,22 @@ function Homepage() {
         {/* <TimesheetApproval /> */}
         {/* <Login />
         <Register /> */}
-        {/* <Card style={{ width: '18rem' }}>
+        <Card style={{ width: '18rem', marginLeft:"580px" }}>
       <Card.Img variant="top" src={zoro} />
       <Card.Body>
-        <Card.Title>Zoro</Card.Title>
+        <Card.Title><b>Project Timesheet</b></Card.Title>
         <Card.Text>
-          Zoro adalah Kru Mugiwara No Luffy
-        </Card.Text>
-        <Button variant="primary">Cerita tentang zoro</Button>
+          Welcome to Amartek!
+        </Card.Text><button>
+        <Link to="/timesheet"variant="primary">Input Timesheet</Link>
+        </button>
       </Card.Body>
-    </Card> */}
+    </Card> 
     {/* <namefooter>{namefooter}</namefooter> */}
     
-    // </div>
+    </div>
     
-//   );
+  );
 }
 
 export default Homepage;

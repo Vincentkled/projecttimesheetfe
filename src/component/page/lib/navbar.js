@@ -5,11 +5,15 @@ export const admin = [
     },
     {
         hash: "/timesheet",
-        page: "Timesheet",
+        page: "Input Timesheet",
     },
     {
         hash: "/manager",
         page: "Timesheet Approval",
+    },
+    {
+        hash: "/viewmytimesheet",
+        page: "View My Timesheet",
     },
     {
         hash: "/date",
@@ -28,14 +32,6 @@ export const admin = [
         page: "Show Department",
     },
     {
-        hash: "/showrole",
-        page: "Show Role",
-    },
-    {
-        hash: "/viewmytimesheet",
-        page: "View My Timesheet",
-    },
-    {
         hash: "/about",
         page: "About",
     },
@@ -50,16 +46,16 @@ export const user = [
         page: "Timesheet",
     },
     {
+        hash: "/viewmytimesheet",
+        page: "View My Timesheet",
+    },
+    {
         hash: "/showdate",
         page: "Show Date",
     },
     {
         hash: "/showdepartment",
         page: "Show Department",
-    },
-    {
-        hash: "/viewmytimesheet",
-        page: "View My Timesheet",
     },
     {
         hash: "/about",

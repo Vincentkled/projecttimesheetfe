@@ -8,9 +8,12 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar"
 import "./index.css";
+import { Button } from "react-bootstrap";
+
 
 const Layout = () => {
     const navigate = useNavigate();
+    const [show, setShow] = useState(true);
     const [data, setData] = useState ([{
       email: localStorage.getItem("Email"),
       name: localStorage.getItem("Name"),
@@ -38,26 +41,34 @@ const Layout = () => {
   {if(x == "admin") {
     return (
       <div>
-       <Navbar expand="lg" className="bg-body-tertiary">
-				<Container>
-					<Navbar.Toggle aria-controls="basic-navbar-nav" />
-					<Navbar.Collapse id="basic-navbar-nav">
-						<Nav className="sidebar">
-							{admin.map((link, index) => (
-							<Link
-              className="mx-2"
-              key={index}
-              to={link.hash}
-              
-            >
-              {link.page}
-            </Link>
-							))}
-              <Link to="/" onClick={clearLocal}>Logout</Link>
-						</Nav>
-					</Navbar.Collapse>
-				</Container>
-			</Navbar>
+       <aside style={{ maxWidth: show ? "300px" : "100px" }}>
+			<div>
+				<Button onClick={() => setShow(!show)}variant="warning"></Button>
+				{admin.map((link, index) => (
+					<section className="wrap">
+						<div className="icon"></div>
+						<Link
+							className={`mx-2 link ${show ? "" : "visible"}`}
+							key={index}
+							to={link.hash}
+						>
+							{link.page}
+						</Link>
+					</section>
+				))}
+			</div>
+
+			<section className="wrap log-out">
+				<div className="icon"></div>
+				<Link
+					to="/"
+					onClick={clearLocal}
+					className="sidebar-footer"
+				>
+					Log Out
+				</Link>
+			</section>
+		</aside>
 
       <Outlet />
       </div>
@@ -65,26 +76,34 @@ const Layout = () => {
   } else if (x == "user"){
     return (
       <div>
-     <Navbar expand="lg" className="bg-body-tertiary">
-				<Container>
-					<Navbar.Toggle aria-controls="basic-navbar-nav" />
-					<Navbar.Collapse id="basic-navbar-nav">
-						<Nav className="me-auto">
-							{user.map((link, index) => (
-							<Link
-              className="mx-2"
-              key={index}
-              to={link.hash}
-              
-            >
-              {link.page}
-            </Link>
-							))}
-              <Link to="/" onClick={clearLocal}>Logout</Link>
-						</Nav>
-					</Navbar.Collapse>
-				</Container>
-			</Navbar>
+     <aside style={{ maxWidth: show ? "300px" : "100px" }}>
+			<div>
+				<Button onClick={() => setShow(!show)}variant="warning"></Button>
+				{user.map((link, index) => (
+					<section className="wrap">
+						<div className="icon"></div>
+						<Link
+							className={`mx-2 link ${show ? "" : "visible"}`}
+							key={index}
+							to={link.hash}
+						>
+							{link.page}
+						</Link>
+					</section>
+				))}
+			</div>
+
+			<section className="wrap log-out">
+				<div className="icon"></div>
+				<Link
+					to="/"
+					onClick={clearLocal}
+					className="sidebar-footer"
+				>
+					Log Out
+				</Link>
+			</section>
+		</aside>
 
     <Outlet />
     </div>

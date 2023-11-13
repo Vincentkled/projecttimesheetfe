@@ -1,11 +1,14 @@
 .App {
   text-align: center;
-  background-image: url(https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/c310e612-1021-4969-9b81-159b39fde5b6/d8iq81g-953a396f-2ae4-4278-a3b1-0ab4492ce991.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2MzMTBlNjEyLTEwMjEtNDk2OS05YjgxLTE1OWIzOWZkZTViNlwvZDhpcTgxZy05NTNhMzk2Zi0yYWU0LTQyNzgtYTNiMS0wYWI0NDkyY2U5OTEucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.2DEV1nobAaBE-ukTOCqIPZbXSW77r9XSEAqvozukqfI);
+  /* background-image: url(https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/c310e612-1021-4969-9b81-159b39fde5b6/d8iq81g-953a396f-2ae4-4278-a3b1-0ab4492ce991.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2MzMTBlNjEyLTEwMjEtNDk2OS05YjgxLTE1OWIzOWZkZTViNlwvZDhpcTgxZy05NTNhMzk2Zi0yYWU0LTQyNzgtYTNiMS0wYWI0NDkyY2U5OTEucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.2DEV1nobAaBE-ukTOCqIPZbXSW77r9XSEAqvozukqfI); */
   background-size: cover;
   background-repeat: no-repeat;
   height: 100vh;
 }
-
+body{
+position: relative;
+padding-left: 100px;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;

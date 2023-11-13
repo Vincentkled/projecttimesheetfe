@@ -1,5 +1,56 @@
-.sidebar{
-    display: flex;
-    flex-direction: column;
 
+
+aside {
+	overflow: auto;
+	top: 0;
+	position: fixed;
+	display: flex;
+	flex-direction: column;
+	background: white;
+	width: 250px;
+	min-height: 100vh;
+	padding: 2rem;
+	transition: ease-in-out 0.3s;
+	justify-content: space-between;
+    left: 0;
+}
+
+aside div {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+.link {
+	color: black;
+	text-decoration: none;
+	font-size: small;
+	overflow: hidden;
+	white-space: nowrap;
+}
+.visible {
+	display: none;
+}
+
+.icon {
+	min-height: 25px;
+	max-height: 25px;
+	min-width: 25px;
+	background: red;
+}
+
+.wrap {
+	display: flex;
+}
+
+.log-out {
+	margin-top: 3rem;
+	position: static;
+	bottom: 0;
+}
+.sidebar-footer a {
+    padding: 15px;
+    width: 33.333337%;
+    float: left;
+    text-align: center;
+    font-size: 18px;
 }
