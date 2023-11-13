@@ -55,7 +55,7 @@ function Login() {
   return (
     <div className="container">
   <div className="mb-3">
-    <label className="white-text">Email</label>
+    <label className="black-text">Email</label>
     <input
       name="email"
       type="text"
@@ -66,7 +66,7 @@ function Login() {
     />
   </div>
   <div className="mb-3">
-    <label className="white-text">Password</label>
+    <label className="black-text">Password</label>
     <input
       name="password"
       type="password"

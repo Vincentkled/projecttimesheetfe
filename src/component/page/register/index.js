@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Modal from "react-bootstrap/Modal";
 import Button from 'react-bootstrap/Button';
+import { Link, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
   const [data, setData] = useState({
@@ -18,7 +20,7 @@ function Register() {
   const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
   const [managerErrorMessage, setManagerErrorMessage] = useState("");
   const [departmentErrorMessage, setDepartmentErrorMessage] = useState("");
-
+  const navigate = useNavigate ();
   const validatePassword = (password) => {
     if (password.length < 8) {
       return "Password harus terdiri dari minimal 8 karakter!";
@@ -43,7 +45,7 @@ function Register() {
       setManagers(response.data.results);
     });
   }, []);
-
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -104,24 +106,29 @@ function Register() {
     })
       .then((response) => {
         console.log("Registration Successful: ", response.data);
+        alert("SUKSES")
       })
       .catch((error) => {
         console.error("Registration Failed: ", error);
       });
   };
-
+  const handleClose = () =>{
+    navigate("/")
+  }
   return (
     <>
-    <Button className="mt-2" variant="primary" onClick={() => setShow(true)}>
-      Don't Have an Account ? Regist Here!
-    </Button>
+    <div>Don't Have an Account ? 
+    <Link to="/register"className="mt-2" variant="primary" onClick={() => setShow(true)}>
+      Regist
+    </Link>
+    </div>
     <Modal
       show={show}
       onHide={() => setShow(false)}
       dialogClassName="modal-90w"
       aria-labelledby="example-custom-modal-styling-title"
     >
-      <Modal.Header closeButton>
+      <Modal.Header closeButton onClick={handleClose}>
         <Modal.Title id="example-custom-modal-styling-title">
           Register
         </Modal.Title>

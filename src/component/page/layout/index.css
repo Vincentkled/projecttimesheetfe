@@ -35,7 +35,6 @@ aside div {
 	min-height: 25px;
 	max-height: 25px;
 	min-width: 25px;
-	background: red;
 }
 
 .wrap {
@@ -54,3 +53,6 @@ aside div {
     text-align: center;
     font-size: 18px;
 }
+
+
+

@@ -4,11 +4,9 @@ const timesheetSlicer = createSlice({
     name: "timesheet",
     initialState: [],
     reducers: {
-      addTimesheet: (state, action) => {
+      approveTimesheet: (state, action) => {
       },
-      updateTimesheet: (state, action) => {
-      },
-      removeTimesheet: (state, action) => {
+      rejectTimesheet: (state, action) => {
       },
     },
   });

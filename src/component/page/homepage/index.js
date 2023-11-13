@@ -57,7 +57,7 @@ function Homepage() {
 
   return (
     <div>
-      <h1>Homepage</h1>
+      {/* <h1>Homepage</h1> */}
       {/* <Header /> */}
         {/* <Timesheet /> */}
         {/* <MyTable /> */}
@@ -68,17 +68,19 @@ function Homepage() {
         {/* <TimesheetApproval /> */}
         {/* <Login />
         <Register /> */}
-        <Card style={{ width: '18rem', marginLeft:"580px" }}>
-      <Card.Img variant="top" src={zoro} />
-      <Card.Body>
-        <Card.Title><b>Project Timesheet</b></Card.Title>
-        <Card.Text>
-          Welcome to Amartek!
-        </Card.Text><button>
-        <Link to="/timesheet"variant="primary">Input Timesheet</Link>
-        </button>
-      </Card.Body>
-    </Card> 
+      <Card style={{ width: '18rem', marginLeft: '580px', boxShadow: '0 16px 32px rgba(0, 0, 0, 0.6)' }}>
+  <Card.Img variant="top" src={zoro} />
+  <Card.Body>
+    <Card.Title><b>Project Timesheet</b></Card.Title>
+    <Card.Text>
+      Welcome to Amartek!
+    </Card.Text>
+    <button>
+      <Link to="/timesheet" variant="primary">Input Timesheet</Link>
+    </button>
+  </Card.Body>
+</Card>
+
     {/* <namefooter>{namefooter}</namefooter> */}
     
     </div>

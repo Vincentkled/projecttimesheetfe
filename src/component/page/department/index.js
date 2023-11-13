@@ -49,7 +49,12 @@ const DepartmentForm = () => {
 
   return (
     <>
-    <Button variant="primary" onClick={() => setShow(true)}>
+    <Button variant="primary" onClick={() => setShow(true)} style={{
+    position: 'fixed',
+    top: '25%',
+    left: '50%',
+    transform: 'translate(-20%, -20%)',
+  }}>
       Create Department
     </Button>
     <Modal

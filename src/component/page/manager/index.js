@@ -124,7 +124,12 @@ function ManagerPage() {
       </p>
 
       <>
-        <Button variant="primary" onClick={handleShow}>
+        <Button variant="primary" onClick={handleShow} style={{
+    position: 'fixed',
+    top: '25%',
+    left: '50%',
+    transform: 'translate(-20%, -20%)',
+  }}>
 				Open Timesheet Approval
 			</Button>
 
