@@ -55,11 +55,10 @@ function ViewmyTimesheet() {
       timesheet.activity,
       timesheet.attendance,
       timesheet.status,
-    parseInt( (formatTime(timesheet.end_time)) -parseInt(formatTime(timesheet.start_time)))*24
     ]);
    
     const ws = XLSX.utils.aoa_to_sheet([
-      ["Employee", "Date", "Start", "End", "Activity", "Attendance", "Status", "Hour" ],
+      ["Employee", "Date", "Start", "End", "Activity", "Attendance", "Status" ],
       ...data,
     ]);
     const wb = XLSX.utils.book_new();
@@ -81,7 +80,14 @@ function ViewmyTimesheet() {
           <td>{formatTime(timesheet.end_time)}</td>
           <td>{timesheet.activity}</td>
           <td>{timesheet.attendance}</td>
-          <td>{timesheet.status}</td>
+          <td style={{
+              color:
+                timesheet.status === "Approved"
+                  ? "#097969"
+                  : timesheet.status === "Rejected"
+                  ? "red"
+                  : "#E49B0F"
+            }}>{timesheet.status}</td>
         </tr>
       );
     });
