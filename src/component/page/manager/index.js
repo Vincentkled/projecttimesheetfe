@@ -109,7 +109,6 @@ function ManagerPage() {
               onClick={() => updatestatus(timesheet, "Rejected")}
               variant="danger"
             >
-              {" "}
               Reject
             </Button>
           </td>

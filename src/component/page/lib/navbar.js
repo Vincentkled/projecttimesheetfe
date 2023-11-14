@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { AiOutlineLogout, AiFillContainer,AiFillHome, AiOutlineClockCircle, AiOutlineCheckCircle, AiOutlineTable, AiOutlineAim, AiOutlineApartment, AiOutlineInfoCircle } from 'react-icons/ai';
+import { AiFillFileExcel, AiOutlineLogout, AiFillContainer,AiFillHome, AiOutlineClockCircle, AiOutlineCheckCircle, AiOutlineTable, AiOutlineAim, AiOutlineApartment, AiOutlineInfoCircle } from 'react-icons/ai';
 
 export const admin = [
     {
@@ -50,6 +50,12 @@ export const admin = [
         page: "Show Department",
         icon: AiOutlineApartment,
         to: "/showdepartment"
+    },
+    {
+        hash: "/timesheetreport",
+        page: "Timesheet Report",
+        icon: AiFillFileExcel,
+        to: "/timesheetreport"
     },
     {
         hash: "/about",

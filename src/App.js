@@ -21,6 +21,7 @@ import Register from "./component/page/register";
 import ViewmyTimesheet from "./component/page/viewmytimesheet";
 import Unauthorized from "./component/page/unauthorized";
 import "bootstrap/dist/css/bootstrap.min.css";
+import TimesheetReport from "./component/page/timesheetreport";
 function App() {
   // const count = useSelector((state) => state.counter.value);
   // const dispatch = useDispatch();
@@ -162,6 +163,7 @@ function App() {
           <Route path="/showdepartment" element={<ShowDepartment />} />
           <Route path="/register" element={<Register />} />
           <Route path="/viewmytimesheet/" element={<ViewmyTimesheet />} />
+          <Route path="/timesheetreport" element={x=="admin"?<TimesheetReport />:<Unauthorized/>} />
         </Route>
       </Routes>
     </BrowserRouter>
