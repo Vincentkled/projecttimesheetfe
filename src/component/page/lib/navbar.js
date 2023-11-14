@@ -39,18 +39,18 @@ export const admin = [
         icon: AiOutlineTable,
         to: "/showdate"
     },
-    {
-        hash: "/department",
-        page: "Create Department",
-        icon: AiOutlineAim,
-        to: "/department"
-    },
-    {
-        hash: "/showdepartment",
-        page: "Show Department",
-        icon: AiOutlineApartment,
-        to: "/showdepartment"
-    },
+    // {
+    //     hash: "/department",
+    //     page: "Create Department",
+    //     icon: AiOutlineAim,
+    //     to: "/department"
+    // },
+    // {
+    //     hash: "/showdepartment",
+    //     page: "Show Department",
+    //     icon: AiOutlineApartment,
+    //     to: "/showdepartment"
+    // },
     {
         hash: "/timesheetreport",
         page: "Timesheet Report",
@@ -90,12 +90,12 @@ export const user = [
         icon: AiOutlineTable,
         to: "/showdate"
     },
-    {
-        hash: "/showdepartment",
-        page: "Show Department",
-        icon: AiOutlineApartment,
-        to: "/showdepartment"
-    },
+    // {
+    //     hash: "/showdepartment",
+    //     page: "Show Department",
+    //     icon: AiOutlineApartment,
+    //     to: "/showdepartment"
+    // },
     {
         hash: "/about",
         page: "About",

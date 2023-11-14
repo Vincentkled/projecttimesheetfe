@@ -164,7 +164,7 @@ const TimesheetReport = () => {
   };
 
   return (
-    <div style={{ marginLeft: "250px", padding: "20px" }}>
+    <div style={{ padding: "20px" }}>
       <p style={{ color: "cyan" }}>
         <b>
           {" "}
@@ -176,7 +176,7 @@ const TimesheetReport = () => {
             className="override"
           />
         </b>
-        <InputGroup className="mb-3">
+        <InputGroup className="mb-3" style={{ maxWidth:"300px", marginLeft: "1100px" }}>
           <FormControl
             placeholder="Search by Employee Name"
             aria-label="Search"

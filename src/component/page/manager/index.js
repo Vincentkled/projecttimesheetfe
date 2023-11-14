@@ -67,7 +67,7 @@ function ManagerPage() {
     Swal.fire({
       position: "center",
       icon: "success",
-      title: "Your timesheet has been saved",
+      title: "Timesheet has been saved",
       showConfirmButton: false,
       timer: 2000
     }).then(()=>{
@@ -101,7 +101,7 @@ function ManagerPage() {
             style={{
               color:
                 timesheet.attendance === "Present"
-                  ? "black"
+                  ? "#097969"
                   : timesheet.attendance === "Absence"
                   ? "red"
                   : timesheet.attendance === "Sick"
@@ -118,12 +118,14 @@ function ManagerPage() {
             <Button
               onClick={() => updatestatus(timesheet, "Approved")}
               variant="success"
+              hidden={localStorage.getItem("Manager") !== 'null'}
             >
               Approve
             </Button>
             <Button
               onClick={() => updatestatus(timesheet, "Rejected")}
               variant="danger"
+              hidden={localStorage.getItem("Manager") !== 'null'}
             >
               Reject
             </Button>
@@ -145,17 +147,17 @@ function ManagerPage() {
       </p>
 
       <>
-        <Button variant="primary" onClick={handleShow} style={{
+        {/* <Button variant="primary" onClick={handleShow} style={{
     position: 'fixed',
     top: '25%',
     left: '50%',
     transform: 'translate(-20%, -20%)',
   }}>
 				Open Timesheet Approval
-			</Button>
+			</Button> */}
 
-        <Modal show={show} onHide={handleClose}>
-          <InputGroup className="mb-3">
+        {/* <Modal show={show} onHide={handleClose}> */}
+          <InputGroup className="mb-3" style={{ maxWidth:"300px", marginLeft: "1100px" }}>
             <FormControl
               placeholder="Search by Employee Name"
               aria-label="Search"
@@ -179,7 +181,7 @@ function ManagerPage() {
             </thead>
             <tbody>{showTable()}</tbody>
           </Table>
-        </Modal>
+        {/* </Modal> */}
       </>
     </div>
   );

@@ -39,7 +39,8 @@ function Login() {
         console.log("Email:", decoded.sub);
         console.log("Name:", decoded.name);
         console.log("Role:", decoded.role);
-        console.log("Id", decoded.id)
+        console.log("Id:", decoded.id)
+        console.log("Manager:", decoded.manager_id)
 
         // Simpan data ke localStorage
         localStorage.setItem("Token", token);
@@ -47,6 +48,7 @@ function Login() {
         localStorage.setItem("Name", decoded.name);
         localStorage.setItem("Role", decoded.role);
         localStorage.setItem("Id", decoded.id);
+        localStorage.setItem("Manager", decoded.manager_id);
         setLoading(false)
         navigate(0)
       })

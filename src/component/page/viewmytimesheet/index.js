@@ -161,7 +161,7 @@ function ViewmyTimesheet() {
           />
         </b>
       </p>
-      <button onClick={exportToExcel} style={{ marginLeft: "1200px" }}>
+      <button onClick={exportToExcel} style={{ textAlign: "right", marginTop: "10px" }}>
         Export to Excel
       </button>
       <Table striped bordered hover>

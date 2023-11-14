@@ -3,6 +3,7 @@ import axios from "axios";
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import Swal from "sweetalert2";
 
 const TimesheetForm = () => {
 
@@ -88,7 +89,13 @@ const TimesheetForm = () => {
           ...formData,
         });
         console.log(response);
-        alert("Timesheet berhasil di input");
+       Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Timesheet successfully inputted",
+          showConfirmButton: false,
+          timer: 1500
+        })
         resetForm();
       })
       .catch((error) => {
@@ -96,8 +103,10 @@ const TimesheetForm = () => {
       });
     console.log(formData);
   };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
+    
     if (name === "employee") {
       setFormData({
         ...formData,
@@ -112,6 +121,19 @@ const TimesheetForm = () => {
           id: value,
         },
       });
+    } else if (name === "start_time") {
+      // Update start_time
+      setFormData({
+        ...formData,
+        start_time: value,
+        end_time: value < formData.end_time ? value : formData.end_time,
+      });
+    } else if (name === "end_time") {
+      // Update end_time
+      setFormData({
+        ...formData,
+        end_time: value > formData.start_time ? value : formData.start_time,
+      });
     } else {
       setFormData({
         ...formData,
@@ -119,6 +141,7 @@ const TimesheetForm = () => {
       });
     }
   };
+  
 
   return (<>
     <Button variant="primary" onClick={handleShow}  style={{
