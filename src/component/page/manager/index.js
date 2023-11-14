@@ -5,14 +5,17 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Button, FormControl, InputGroup } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
+import "./index.css"
+import { CSSProperties } from "react";
+import ClipLoader from "react-spinners/ClipLoader";
+import Swal from "sweetalert2";
 
 function ManagerPage() {
   const [show, setShow] = useState(true);
-
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [timesheet, setTimesheet] = useState([{}]);
-  const [loading, setLoading] = useState("");
+  const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [data, setData] = useState([
     {
@@ -27,6 +30,7 @@ function ManagerPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   useEffect(() => {
+    setLoading(false)
     axios({
       url: "http://localhost:8089/api/timesheet",
       method: "GET",
@@ -38,14 +42,14 @@ function ManagerPage() {
       .then((response) => {
         setTimesheet(response.data.results);
         console.log(response);
-        setLoading("");
+        setLoading(false);
+        
       })
       .catch((error) => {
         console.log(error);
       });
-    setLoading("lagi loading sebentar ya");
+    setLoading(false);
   }, []);
-
   const updatestatus = (timesheet, status) => {
     axios({
       url: `http://localhost:8089/api/timesheet/${timesheet.id}`,
@@ -60,7 +64,17 @@ function ManagerPage() {
         status: status,
       },
     });
-    navigate(0);
+    Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Your timesheet has been saved",
+      showConfirmButton: false,
+      timer: 2000
+    }).then(()=>{
+      navigate(0);
+    }).catch((error) => {
+      console.log(error);
+    });
   };
 
   const filterstatus = timesheet.filter(
@@ -91,13 +105,15 @@ function ManagerPage() {
                   : timesheet.attendance === "Absence"
                   ? "red"
                   : timesheet.attendance === "Sick"
-                  ? "#8B8000"
+                  ? "#E49B0F"
                   : "red",
             }}
           >
             {timesheet.attendance}
           </td>
-          <td>{timesheet.status}</td>
+          <td style={{
+              color:"#E49B0F"
+            }}>{timesheet.status}</td>
           <td>
             <Button
               onClick={() => updatestatus(timesheet, "Approved")}
@@ -118,8 +134,14 @@ function ManagerPage() {
   };
   return (
     <div>
-      <p style={{ color: "cyan" }}>
-        <b>{loading}</b>
+      <p style={{ color: "red" }}>
+        <b>   <ClipLoader
+        loading={loading}
+        size={150}
+        aria-label="Loading Spinner"
+        data-testid="loader"
+        className="override"
+      /></b>
       </p>
 
       <>

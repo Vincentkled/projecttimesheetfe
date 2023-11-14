@@ -3,14 +3,16 @@ import axios from "axios";
 import Table from "react-bootstrap/Table";
 import * as XLSX from "xlsx";
 import { InputGroup, FormControl } from "react-bootstrap";
+import Swal from "sweetalert2";
+import ClipLoader from "react-spinners/ClipLoader";
 
 const TimesheetReport = () => {
   const [timesheet, setTimesheet] = useState([]);
-  const [loading, setLoading] = useState("");
+  const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    setLoading("Loading data...");
+    setLoading(true);
     axios({
       url: "http://localhost:8089/api/timesheet",
       method: "GET",
@@ -20,11 +22,11 @@ const TimesheetReport = () => {
     })
       .then((response) => {
         setTimesheet(response.data.results);
-        setLoading("");
+        setLoading(false);
       })
       .catch((error) => {
         console.error(error);
-        setLoading("Error");
+        setLoading(false);
       });
   }, []);
 
@@ -46,16 +48,40 @@ const TimesheetReport = () => {
       const dateB = new Date(b.dateentity?.datetb);
       return dateA - dateB;
     });
-
-    const data = sortedTimesheet.map((timesheet) => [
-      timesheet.employee?.name,
-      timesheet.dateentity?.datetb,
-      formatTime(timesheet.start_time),
-      formatTime(timesheet.end_time),
-      timesheet.activity,
-      timesheet.attendance,
-      timesheet.status,
-    ]);
+    let timerInterval;
+    const data = sortedTimesheet.map(
+      (timesheet) => [
+        timesheet.employee?.name,
+        timesheet.dateentity?.datetb,
+        formatTime(timesheet.start_time),
+        formatTime(timesheet.end_time),
+        timesheet.activity,
+        timesheet.attendance,
+        timesheet.status,
+        (new Date(timesheet.end_time) - new Date(timesheet.start_time)) /
+          (1000 * 60 * 60),
+      ],
+      Swal.fire({
+        title: "Hi There! Please wait a moment.",
+        html: "Timesheet is Downloading in <b></b> milliseconds.",
+        timer: 2000,
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+          const timer = Swal.getPopup().querySelector("b");
+          timerInterval = setInterval(() => {
+            timer.textContent = `${Swal.getTimerLeft()}`;
+          }, 100);
+        },
+        willClose: () => {
+          clearInterval(timerInterval);
+        },
+      }).then((result) => {
+        if (result.dismiss === Swal.DismissReason.timer) {
+          console.log("It was closed by the timer");
+        }
+      })
+    );
 
     const ws = XLSX.utils.aoa_to_sheet([
       [
@@ -66,6 +92,7 @@ const TimesheetReport = () => {
         "Activity",
         "Attendance",
         "Status",
+        "Hour ",
       ],
       ...data,
     ]);
@@ -106,16 +133,49 @@ const TimesheetReport = () => {
         <td>{formatTime(timesheet.start_time)}</td>
         <td>{formatTime(timesheet.end_time)}</td>
         <td>{timesheet.activity}</td>
-        <td>{timesheet.attendance}</td>
-        <td>{timesheet.status}</td>
+        <td
+          style={{
+            color:
+              timesheet.attendance === "Present"
+                ? "#097969"
+                : timesheet.attendance === "Absence"
+                ? "red"
+                : timesheet.attendance === "Sick"
+                ? "#E49B0F"
+                : "red",
+          }}
+        >
+          {timesheet.attendance}
+        </td>
+        <td
+          style={{
+            color:
+              timesheet.status === "Approved"
+                ? "#097969"
+                : timesheet.status === "Rejected"
+                ? "red"
+                : "#E49B0F",
+          }}
+        >
+          {timesheet.status}
+        </td>
       </tr>
     ));
   };
 
   return (
-    <div style={{ marginLeft: '250px', padding: '20px' }}>
+    <div style={{ marginLeft: "250px", padding: "20px" }}>
       <p style={{ color: "cyan" }}>
-        <b>{loading}</b>
+        <b>
+          {" "}
+          <ClipLoader
+            loading={loading}
+            size={150}
+            aria-label="Loading Spinner"
+            data-testid="loader"
+            className="override"
+          />
+        </b>
         <InputGroup className="mb-3">
           <FormControl
             placeholder="Search by Employee Name"

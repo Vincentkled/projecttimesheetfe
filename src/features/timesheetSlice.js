@@ -4,14 +4,14 @@ const timesheetSlicer = createSlice({
     name: "timesheet",
     initialState: [],
     reducers: {
-      approveTimesheet: (state, action) => {
-      },
-      rejectTimesheet: (state, action) => {
+      token: () => {
+        localStorage.getItem("Role");
+        localStorage.get("Id");
       },
     },
   });
   
-  export const { addTimesheet, updateTimesheet, removeTimesheet } = timesheetSlicer.actions;
+  export const { token } = timesheetSlicer.actions;
   
   export default timesheetSlicer.reducer;
   

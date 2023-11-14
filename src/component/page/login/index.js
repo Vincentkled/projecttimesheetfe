@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
+import ClipLoader from "react-spinners/ClipLoader";
 
 function Login() {
   const [data, setData] = useState({
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate ();
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,6 +20,7 @@ function Login() {
   };
 
   const handleSubmit = () => {
+    setLoading(true)
     axios({
       url: "http://localhost:8089/authenticate",
       method: "POST",
@@ -44,6 +47,7 @@ function Login() {
         localStorage.setItem("Name", decoded.name);
         localStorage.setItem("Role", decoded.role);
         localStorage.setItem("Id", decoded.id);
+        setLoading(false)
         navigate(0)
       })
       .catch((error) => {
@@ -54,6 +58,15 @@ function Login() {
 
   return (
     <div className="container">
+      <p style={{ color: "red" }}>
+        <b>   <ClipLoader
+        loading={loading}
+        size={150}
+        aria-label="Loading Spinner"
+        data-testid="loader"
+        className="override"
+      /></b>
+      </p>
   <div className="mb-3">
     <label className="black-text">Email</label>
     <input

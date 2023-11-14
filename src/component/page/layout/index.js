@@ -69,7 +69,7 @@ const Layout = () => {
               <div className="icon"></div>
               <Link to="/" onClick={clearLocal} className="wrap log-out">
                 <div className="icon">
-                  <AiOutlineLogout style={{ fontSize: "2em" }} />
+                  <AiOutlineLogout style={{ fontSize: "2em"}} />
                 </div>
                 <span className={`sidebar-footer ${show ? "" : "visible"}`}>Logout</span>
               </Link>

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Table from "react-bootstrap/Table";
+import ClipLoader from "react-spinners/ClipLoader";
 
 function ShowDate() {
   const [dateentity, setDateentity] = useState([{}]);
-  const [loading, setLoading] =useState("");
+  const [loading, setLoading] =useState(false);
 
 
   useEffect(() => {
@@ -19,12 +20,12 @@ function ShowDate() {
       .then((response) => {
        setDateentity(response.data.results)
         console.log(response);
-        setLoading("")
+        setLoading(false)
       })
       .catch((error) => {
         console.log(error);
       });
-      setLoading("lagi loading sebentar ya");
+      setLoading(true);
   }, []);
 
 
@@ -46,7 +47,15 @@ function ShowDate() {
 }
   return (
     <div>
-    <p style={{color:"cyan"}}><b>{loading}</b></p>
+   <p style={{ color: "red" }}>
+        <b>   <ClipLoader
+        loading={loading}
+        size={150}
+        aria-label="Loading Spinner"
+        data-testid="loader"
+        className="override"
+      /></b>
+      </p>
     <Table striped bordered hover>
         <thead>
             <tr>    
