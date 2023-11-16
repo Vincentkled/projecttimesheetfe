@@ -43,6 +43,8 @@ function ViewmyTimesheet() {
   const filterstatus = timesheet.filter(
     (timesheet) => timesheet.employee?.name === x.toString()
   );
+  const filterapprove = filterstatus.filter((timesheet) => timesheet.status ==="Approved") 
+
   const sortedFilterStatus = filterstatus.sort((a, b) => {
     return new Date(a.dateentity?.datetb) - new Date(b.dateentity?.datetb);
   });
@@ -52,7 +54,7 @@ function ViewmyTimesheet() {
   };
   let timerInterval;
   const exportToExcel = () => {
-    const data = filterstatus.map(
+    const data = filterapprove.map(
       (timesheet) => [
         timesheet.employee?.name,
         timesheet.dateentity?.datetb,
@@ -85,6 +87,17 @@ function ViewmyTimesheet() {
         }
       })
     );
+      // Hitung total hours menggunakan reduce
+  const totalHours = filterapprove.reduce(
+    (total, timesheet) =>
+      total +
+      ((new Date(timesheet.end_time) - new Date(timesheet.start_time)) /
+        (1000 * 60 * 60)),
+    0
+  );
+
+  // Menambahkan baris untuk total hours
+  data.push(["", "", "", "", "", "","Total Hours", totalHours]);
 
     const ws = XLSX.utils.aoa_to_sheet([
       [

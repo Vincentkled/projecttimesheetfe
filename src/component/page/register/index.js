@@ -33,7 +33,6 @@ function Register() {
     }
     return ""; // Tidak ada error
   };
-
   useEffect(() => {
      // Fetch departments
      axios.get("http://localhost:8089/api/department").then((response) => {

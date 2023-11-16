@@ -54,6 +54,8 @@ function Login() {
       })
       .catch((error) => {
         console.log(error);
+        setLoading(false)
+        alert("Username dan Password tidak sesuai")
       });
   };
 
