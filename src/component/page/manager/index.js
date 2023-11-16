@@ -50,6 +50,7 @@ function ManagerPage() {
       });
     setLoading(false);
   }, []);
+ 
   const updatestatus = (timesheet, status) => {
     axios({
       url: `http://localhost:8089/api/timesheet/${timesheet.id}`,
@@ -111,25 +112,29 @@ function ManagerPage() {
           >
             {timesheet.attendance}
           </td>
-          <td style={{
+          <td
+          style={{
               color:"#E49B0F"
             }}>{timesheet.status}</td>
-          <td>
+            {
+              localStorage.getItem("Manager") !== 'null' ? null : (
+                <td>
             <Button
               onClick={() => updatestatus(timesheet, "Approved")}
               variant="success"
-              hidden={localStorage.getItem("Manager") !== 'null'}
             >
               Approve
             </Button>
             <Button
               onClick={() => updatestatus(timesheet, "Rejected")}
               variant="danger"
-              hidden={localStorage.getItem("Manager") !== 'null'}
             >
               Reject
             </Button>
           </td>
+              )
+            }
+          
         </tr>
       );
     });
@@ -176,7 +181,12 @@ function ManagerPage() {
                 <th>Activity</th>
                 <th>Attendance</th>
                 <th>Status</th>
-                <th>Action</th>
+                {
+                  localStorage.getItem("Manager") !== 'null' ? null :(
+                    <th>Action</th>
+                  )
+                }
+                
               </tr>
             </thead>
             <tbody>{showTable()}</tbody>

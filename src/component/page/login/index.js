@@ -72,7 +72,7 @@ function Login() {
       /></b>
       </p>
   <div className="mb-3">
-    <label className="black-text">Email</label>
+    <label className="black-text"></label>
     <input
       name="email"
       type="text"
@@ -80,17 +80,19 @@ function Login() {
       onChange={handleChange}
       className="container"
       style={{ maxWidth: "300px", marginLeft:"30px", marginTop:"15px", marginBottom:"-3px" }} 
+      placeholder ="Email"
     />
   </div>
   <div className="mb-3">
-    <label className="black-text">Password</label>
+    <label className="black-text"></label>
     <input
       name="password"
       type="password"
       value={data.password}
       onChange={handleChange}
       className="container"
-      style={{ maxWidth: "300px", marginLeft:"3px",marginTop:"-10px" }} 
+      style={{ maxWidth: "300px", marginLeft:"30px",  marginBottom:"-5px" }} 
+      placeholder ="Password"
     />
   </div>
   <button onClick={handleSubmit} className="btn btn-primary">
