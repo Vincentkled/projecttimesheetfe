@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Swal from "sweetalert2";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const TimesheetForm = () => {
 
@@ -39,7 +40,7 @@ const TimesheetForm = () => {
   });
 
   const [show, setShow] = useState(true);
-
+  const navigate = useNavigate();
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -97,6 +98,7 @@ const TimesheetForm = () => {
           timer: 1500
         })
         resetForm();
+        navigate(0)
       })
       .catch((error) => {
         console.log(error);
@@ -196,7 +198,7 @@ const TimesheetForm = () => {
               value={formData.start_time}
               onChange={handleChange}
               placeholder="yyyy-MM-dd(T)HH:mm:ss"
-              required
+              // required
             />
           </Form.Group>
           {/* End Time */}
@@ -208,7 +210,7 @@ const TimesheetForm = () => {
               value={formData.end_time}
               onChange={handleChange}
               placeholder="yyyy-MM-dd(T)HH:mm:ss"
-              required
+              // required
             />
           </Form.Group>
           {/* Activity */}
@@ -219,7 +221,7 @@ const TimesheetForm = () => {
               name="activity"
               value={formData.activity}
               onChange={handleChange}
-              required
+              // required
             />
           </Form.Group>
           {/* Attendance */}
@@ -247,7 +249,7 @@ const TimesheetForm = () => {
               name="status"
               value={formData.status}
               onChange={handleChange}
-              required
+              // required
               hidden
             />
           </Form.Group>
