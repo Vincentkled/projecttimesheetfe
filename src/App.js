@@ -34,17 +34,17 @@ function App() {
   const [inputValue, setInputValue] = useState(0);
   const [people, setPeople] = useState([]);
 
-  const [user, setUser] = useState(() => {
-    const saveduser = JSON.parse(localStorage.getItem("user"));
-    return (
-      saveduser || {
-        token: "",
-        email: "",
-        name: "",
-        role: "",
-      }
-    );
-  });
+  // const [user, setUser] = useState(() => {
+  //   const saveduser = JSON.parse(localStorage.getItem("user"));
+  //   return (
+  //     saveduser || {
+  //       token: "",
+  //       email: "",
+  //       name: "",
+  //       role: "",
+  //     }
+  //   );
+  // });
 
   // useEffect(() => {
   //   axios({

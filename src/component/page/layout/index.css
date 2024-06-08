@@ -6,7 +6,7 @@ aside {
 	position: fixed;
 	display: flex;
 	flex-direction: column;
-	background: white;
+	background: rgb(255, 255, 255);
 	width: 250px;
 	min-height: 100vh;
 	padding: 2rem;

@@ -11,7 +11,7 @@ import Login from "../login";
 import Register from "../register";
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import zoro from "./amartek.jpg"
+import zoro from "./bsiii.jpg"
 import { Link } from "react-router-dom";
 
 function Homepage() {

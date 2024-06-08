@@ -2,14 +2,17 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Table from "react-bootstrap/Table";
 import * as XLSX from "xlsx";
-import { InputGroup, FormControl } from "react-bootstrap";
+import { InputGroup, FormControl, Dropdown, DropdownButton } from "react-bootstrap";
 import Swal from "sweetalert2";
 import ClipLoader from "react-spinners/ClipLoader";
+import { Bar } from "react-chartjs-2";
+import 'chart.js/auto';
 
 const TimesheetReport = () => {
   const [timesheet, setTimesheet] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedEmployee, setSelectedEmployee] = useState("");
 
   useEffect(() => {
     setLoading(true);
@@ -48,57 +51,47 @@ const TimesheetReport = () => {
       const dateB = new Date(b.dateentity?.datetb);
       return dateA - dateB;
     });
+
     let timerInterval;
-    const data = sortedTimesheet.map(
-      (timesheet) => [
-        timesheet.employee?.name,
-        timesheet.dateentity?.datetb,
-        formatTime(timesheet.start_time),
-        formatTime(timesheet.end_time),
-        timesheet.activity,
-        timesheet.attendance,
-        timesheet.status,
-        (new Date(timesheet.end_time) - new Date(timesheet.start_time)) /
-          (1000 * 60 * 60),
-      ],
-      Swal.fire({
-        title: "Hi There! Please wait a moment.",
-        html: "Timesheet is Downloading in <b></b> milliseconds.",
-        timer: 2000,
-        timerProgressBar: true,
-        didOpen: () => {
-          Swal.showLoading();
-          const timer = Swal.getPopup().querySelector("b");
-          timerInterval = setInterval(() => {
-            timer.textContent = `${Swal.getTimerLeft()}`;
-          }, 100);
-        },
-        willClose: () => {
-          clearInterval(timerInterval);
-        },
-      }).then((result) => {
-        if (result.dismiss === Swal.DismissReason.timer) {
-          console.log("It was closed by the timer");
-        }
-      })
-    );
+    const data = sortedTimesheet.map((timesheet) => [
+      timesheet.employee?.name,
+      timesheet.dateentity?.datetb,
+      formatTime(timesheet.start_time),
+      formatTime(timesheet.end_time),
+      timesheet.activity,
+      timesheet.attendance,
+      timesheet.status,
+      timesheet.attendance === "Present" ? (new Date(timesheet.end_time) - new Date(timesheet.start_time)) / (1000 * 60 * 60) : 0,
+    ]);
 
     const ws = XLSX.utils.aoa_to_sheet([
-      [
-        "Employee",
-        "Date",
-        "Start Time",
-        "End Time",
-        "Activity",
-        "Attendance",
-        "Status",
-        "Hour ",
-      ],
+      ["Employee", "Date", "Start Time", "End Time", "Activity", "Attendance", "Status", "Hour "],
       ...data,
     ]);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Timesheet Report");
     XLSX.writeFile(wb, "timesheet_report.xlsx");
+
+    Swal.fire({
+      title: "Hi There! Please wait a moment.",
+      html: "Timesheet is Downloading in <b></b> milliseconds.",
+      timer: 2000,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading();
+        const timer = Swal.getPopup().querySelector("b");
+        timerInterval = setInterval(() => {
+          timer.textContent = `${Swal.getTimerLeft()}`;
+        }, 100);
+      },
+      willClose: () => {
+        clearInterval(timerInterval);
+      },
+    }).then((result) => {
+      if (result.dismiss === Swal.DismissReason.timer) {
+        console.log("It was closed by the timer");
+      }
+    });
   };
 
   const formatTime = (time) => {
@@ -107,8 +100,10 @@ const TimesheetReport = () => {
   };
 
   const showTable = () => {
-    const filteredTimesheet = timesheet.filter((entry) =>
-      entry.employee?.name.toLowerCase().includes(searchTerm.toLowerCase())
+    const filteredTimesheet = timesheet.filter(
+      (entry) =>
+        entry.employee?.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+        (!selectedEmployee || entry.employee?.name === selectedEmployee)
     );
 
     const sortedTimesheet = filteredTimesheet.sort((a, b) => {
@@ -159,15 +154,51 @@ const TimesheetReport = () => {
         >
           {timesheet.status}
         </td>
+        <td>
+          {timesheet.attendance === "Present" 
+            ? ((new Date(timesheet.end_time) - new Date(timesheet.start_time)) / (1000 * 60 * 60)).toFixed(2)
+            : 0}
+        </td>
       </tr>
     ));
+  };
+
+  const employeeNames = [...new Set(timesheet.map((entry) => entry.employee?.name))];
+
+  const handleEmployeeSelect = (employee) => {
+    setSelectedEmployee(employee);
+  };
+
+  const getChartData = () => {
+    const filteredTimesheet = timesheet.filter(
+      (entry) => entry.employee?.name === selectedEmployee && entry.attendance === "Present"
+    );
+
+    const dates = filteredTimesheet.map((entry) => entry.dateentity?.datetb);
+    const hours = filteredTimesheet.map(
+      (entry) => (new Date(entry.end_time) - new Date(entry.start_time)) / (1000 * 60 * 60)
+    );
+    const backgroundColors = hours.map(
+      (hour) =>
+      hour < 8 ? "rgba(255, 0, 0, 0.6)" : hour < 9 ? "rgba(255, 193, 7, 0.6)" : "rgba(75, 192, 192, 0.6)"
+    );
+
+    return {
+      labels: dates,
+      datasets: [
+        {
+          label: "Hours Worked",
+          data: hours,
+          backgroundColor: backgroundColors,
+        },
+      ],
+    };
   };
 
   return (
     <div style={{ padding: "20px" }}>
       <p style={{ color: "cyan" }}>
         <b>
-          {" "}
           <ClipLoader
             loading={loading}
             size={150}
@@ -176,7 +207,21 @@ const TimesheetReport = () => {
             className="override"
           />
         </b>
-        <InputGroup className="mb-3" style={{ maxWidth:"300px", marginLeft: "1100px" }}>
+        {/* <InputGroup className="mb-3" style={{ maxWidth: "300px", marginLeft: "1100px" }}>
+          <FormControl
+            placeholder="Search by Employee Name"
+            aria-label="Search"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </InputGroup> */}
+      </p>
+      <DropdownButton
+        id="dropdown-basic-button"
+        title={selectedEmployee || "Select Employee"}
+        onSelect={handleEmployeeSelect}
+      >
+         <InputGroup className="mb-3" style={{ maxWidth: "300px" }}>
           <FormControl
             placeholder="Search by Employee Name"
             aria-label="Search"
@@ -184,25 +229,40 @@ const TimesheetReport = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </InputGroup>
-      </p>
-      <div style={{ textAlign: "right", marginTop: "10px" }}>
-        <button onClick={exportToExcel}>Export to Excel</button>
+        {employeeNames.map((name) => (
+          <Dropdown.Item key={name} eventKey={name}>
+            {name}
+          </Dropdown.Item>
+        ))}
+      </DropdownButton>
+      <div style={{ textAlign: "right", marginTop: "20px" }}>
+        <button onClick={exportToExcel} className="btn btn-primary">
+          Export to Excel
+        </button>
       </div>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Employee</th>
-            <th>Date</th>
-            <th>Start</th>
-            <th>End</th>
-            <th>Activity</th>
-            <th>Attendance</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>{showTable()}</tbody>
-      </Table>
+      <div style={{ display: "flex", marginTop: "20px" }}>
+        <Table striped bordered hover size="sm" style={{ marginRight: "20px", flex: 1 }}>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Employee</th>
+              <th>Date</th>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Activity</th>
+              <th>Attendance</th>
+              <th>Status</th>
+              <th>Hours Worked</th>
+            </tr>
+          </thead>
+          <tbody>{showTable()}</tbody>
+        </Table>
+        {selectedEmployee && (
+          <div style={{ flex: 1, backgroundColor: "#f0f0f0" }}>
+            <Bar data={getChartData()} />
+          </div>
+        )}
+      </div>
     </div>
   );
 };

@@ -41,7 +41,7 @@ function ShowDate() {
     const formattedDate = new Date(dateString);
 
     const dd = String(formattedDate.getDate()).padStart(2, '0');
-    const mm = String(formattedDate.getMonth() + 1).padStart(2, '0'); // January is 0!
+    const mm = String(formattedDate.getMonth() + 1).padStart(2, '0'); // January = 0
     const yyyy = formattedDate.getFullYear();
 
     return `${dayName}, ${dd}-${mm}-${yyyy}`;

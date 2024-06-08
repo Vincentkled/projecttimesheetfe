@@ -64,18 +64,20 @@ const TimesheetForm = () => {
     });
   };
 
-  
+  const startTime = (param) => dateentitys.find(x => x.id == param)
+  // console.log(startTime)
   const handleSubmit = (e) => {
     e.preventDefault();
     let object = {
       employee: formData.employee,
-      dateentity: formData.dateentity,
-      start_time: formData.start_time,
-      end_time: formData.end_time,
+      dateentity: formData.dateentity, //2024-03-15
+      start_time: formData.start_time, //2024-03-15 08.00
+      end_time:  formData.end_time,
       activity: formData.activity,
       attendance: formData.attendance,
       status: formData.status,
     };
+    console.log(object)
 
     axios({
       url: "http://localhost:8089/api/timesheet",
