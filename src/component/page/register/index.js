@@ -106,6 +106,7 @@ function Register() {
       .then((response) => {
         console.log("Registration Successful: ", response.data);
         alert("SUKSES")
+        navigate(0)
       })
       .catch((error) => {
         console.error("Registration Failed: ", error);

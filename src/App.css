@@ -1,7 +1,7 @@
 .App {
   text-align: center;
-  background-image: url("https://pbs.twimg.com/media/DpNiWO7UcAUQKEq.png:large");
-  background-size: 30%;
+  background-image: url("https://cdn.pixabay.com/photo/2023/07/19/01/05/sun-8135857_1280.png");
+  background-size: 20%;
   background-repeat: no-repeat;
   background-position: center 55%; /* Adjust the vertical position as needed */
   height: 100vh;

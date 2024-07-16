@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Table from "react-bootstrap/Table";
 import * as XLSX from "xlsx";
-import { InputGroup, FormControl, Dropdown, DropdownButton } from "react-bootstrap";
+import { InputGroup, FormControl, Dropdown, DropdownButton, ButtonGroup } from "react-bootstrap";
 import Swal from "sweetalert2";
 import ClipLoader from "react-spinners/ClipLoader";
 import { Bar } from "react-chartjs-2";
@@ -13,6 +13,8 @@ const TimesheetReport = () => {
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedEmployee, setSelectedEmployee] = useState("");
+  const [selectedMonth, setSelectedMonth] = useState("");
+  const [selectedYear, setSelectedYear] = useState("All Time");
 
   useEffect(() => {
     setLoading(true);
@@ -34,9 +36,9 @@ const TimesheetReport = () => {
   }, []);
 
   const exportToExcel = () => {
-    const filteredTimesheet = timesheet.filter((entry) =>
-      entry.employee?.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    let timerInterval;
+
+    const filteredTimesheet = filterTimesheet();
 
     const sortedTimesheet = filteredTimesheet.sort((a, b) => {
       const nameA = a.employee?.name.toUpperCase();
@@ -52,7 +54,6 @@ const TimesheetReport = () => {
       return dateA - dateB;
     });
 
-    let timerInterval;
     const data = sortedTimesheet.map((timesheet) => [
       timesheet.employee?.name,
       timesheet.dateentity?.datetb,
@@ -64,7 +65,11 @@ const TimesheetReport = () => {
       timesheet.attendance === "Present" ? (new Date(timesheet.end_time) - new Date(timesheet.start_time)) / (1000 * 60 * 60) : 0,
     ]);
 
+    const sheetTitle = `Timesheet ${selectedEmployee} ${selectedMonth !== "" ? months[selectedMonth] : ""} ${selectedYear !== "All Time" ? selectedYear : ""}`;
+
     const ws = XLSX.utils.aoa_to_sheet([
+      [sheetTitle],
+      [],
       ["Employee", "Date", "Start Time", "End Time", "Activity", "Attendance", "Status", "Hour "],
       ...data,
     ]);
@@ -99,12 +104,19 @@ const TimesheetReport = () => {
     return new Date(time).toLocaleTimeString(undefined, options);
   };
 
-  const showTable = () => {
-    const filteredTimesheet = timesheet.filter(
+  const filterTimesheet = () => {
+    return timesheet.filter(
       (entry) =>
         entry.employee?.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-        (!selectedEmployee || entry.employee?.name === selectedEmployee)
+        (!selectedEmployee || entry.employee?.name === selectedEmployee) &&
+        (selectedYear === "All Time" ||
+          ((!selectedMonth || new Date(entry.dateentity?.datetb).getMonth() === parseInt(selectedMonth)) &&
+          (!selectedYear || new Date(entry.dateentity?.datetb).getFullYear() === parseInt(selectedYear))))
     );
+  };
+
+  const showTable = () => {
+    const filteredTimesheet = filterTimesheet();
 
     const sortedTimesheet = filteredTimesheet.sort((a, b) => {
       const nameA = a.employee?.name.toUpperCase();
@@ -132,7 +144,7 @@ const TimesheetReport = () => {
           style={{
             color:
               timesheet.attendance === "Present"
-                ? "#097969"
+                ? "#097969" 
                 : timesheet.attendance === "Absence"
                 ? "red"
                 : timesheet.attendance === "Sick"
@@ -169,9 +181,18 @@ const TimesheetReport = () => {
     setSelectedEmployee(employee);
   };
 
+  const handleMonthSelect = (month) => {
+    setSelectedMonth(month);
+  };
+
+  const handleYearSelect = (year) => {
+    setSelectedYear(year);
+    setSelectedMonth("");
+  };
+
   const getChartData = () => {
-    const filteredTimesheet = timesheet.filter(
-      (entry) => entry.employee?.name === selectedEmployee && entry.attendance === "Present"
+    const filteredTimesheet = filterTimesheet().filter(
+      (entry) => entry.attendance === "Present"
     );
 
     const dates = filteredTimesheet.map((entry) => entry.dateentity?.datetb);
@@ -180,7 +201,7 @@ const TimesheetReport = () => {
     );
     const backgroundColors = hours.map(
       (hour) =>
-      hour < 8 ? "rgba(255, 0, 0, 0.6)" : hour < 9 ? "rgba(255, 193, 7, 0.6)" : "rgba(75, 192, 192, 0.6)"
+        hour < 8 ? "rgba(255, 0, 0, 0.6)" : hour === 9 ? "rgba(75, 192, 192, 0.6)" : "rgba(255, 193, 7, 0.6)"
     );
 
     return {
@@ -195,6 +216,13 @@ const TimesheetReport = () => {
     };
   };
 
+  const months = [
+    "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+    "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+  ];
+
+  const years = ["All Time", ...new Set(timesheet.map((entry) => new Date(entry.dateentity?.datetb).getFullYear()))];
+
   return (
     <div style={{ padding: "20px" }}>
       <p style={{ color: "cyan" }}>
@@ -207,34 +235,51 @@ const TimesheetReport = () => {
             className="override"
           />
         </b>
-        {/* <InputGroup className="mb-3" style={{ maxWidth: "300px", marginLeft: "1100px" }}>
-          <FormControl
-            placeholder="Search by Employee Name"
-            aria-label="Search"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </InputGroup> */}
       </p>
-      <DropdownButton
-        id="dropdown-basic-button"
-        title={selectedEmployee || "Select Employee"}
-        onSelect={handleEmployeeSelect}
-      >
-         <InputGroup className="mb-3" style={{ maxWidth: "300px" }}>
-          <FormControl
-            placeholder="Search by Employee Name"
-            aria-label="Search"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </InputGroup>
-        {employeeNames.map((name) => (
-          <Dropdown.Item key={name} eventKey={name}>
-            {name}
-          </Dropdown.Item>
-        ))}
-      </DropdownButton>
+      <ButtonGroup style={{ display: "flex", justifyContent: "space-between", marginBottom: "20px" }}>
+        <DropdownButton
+          id="dropdown-basic-button"
+          title={selectedEmployee || "Select Employee"}
+          onSelect={handleEmployeeSelect}
+        >
+          <InputGroup className="mb-3" style={{ maxWidth: "300px" }}>
+            <FormControl
+              placeholder="Search by Employee Name"
+              aria-label="Search"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </InputGroup>
+          {employeeNames.map((name) => (
+            <Dropdown.Item key={name} eventKey={name}>
+              {name}
+            </Dropdown.Item>
+          ))}
+        </DropdownButton>
+        <DropdownButton
+          id="dropdown-basic-button"
+          title={selectedMonth ? months[selectedMonth] : "Select Month"}
+          onSelect={handleMonthSelect}
+          disabled={selectedYear === "All Time"}
+        >
+          {months.map((month, index) => (
+            <Dropdown.Item key={index} eventKey={index.toString()}>
+              {month}
+            </Dropdown.Item>
+          ))}
+        </DropdownButton>
+        <DropdownButton
+          id="dropdown-basic-button"
+          title={selectedYear || "Select Year"}
+          onSelect={handleYearSelect}
+        >
+          {years.map((year) => (
+            <Dropdown.Item key={year} eventKey={year.toString()}>
+              {year}
+            </Dropdown.Item>
+          ))}
+        </DropdownButton>
+      </ButtonGroup>
       <div style={{ textAlign: "right", marginTop: "20px" }}>
         <button onClick={exportToExcel} className="btn btn-primary">
           Export to Excel
@@ -257,7 +302,7 @@ const TimesheetReport = () => {
           </thead>
           <tbody>{showTable()}</tbody>
         </Table>
-        {selectedEmployee && (
+        {selectedEmployee && selectedYear !== "All Time" && (
           <div style={{ flex: 1, backgroundColor: "#f0f0f0" }}>
             <Bar data={getChartData()} />
           </div>
