@@ -11,7 +11,7 @@ import Login from "../login";
 import Register from "../register";
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import zoro from "./bsiii.jpg"
+import zoro from "./usd.jpg"
 import { Link } from "react-router-dom";
 
 function Homepage() {
@@ -73,7 +73,7 @@ function Homepage() {
   <Card.Body>
     <Card.Title><b>Project Timesheet</b></Card.Title>
     <Card.Text>
-      Welcome to Amartek!
+      Welcome to PT.Universe Solusi Digital
     </Card.Text>
     <button>
       <Link to="/timesheet" variant="primary">Input Timesheet</Link>

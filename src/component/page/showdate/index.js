@@ -11,29 +11,49 @@ function ShowDate() {
   const [loading, setLoading] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [editedDetail, setEditedDetail] = useState("");
+  const [selectedMonth, setSelectedMonth] = useState("all");
+  const [selectedYear, setSelectedYear] = useState("all");
 
   const navigate = useNavigate();
 
   useEffect(() => {
+    setLoading(true);
     axios({
       url: "http://localhost:8089/api/dateentity",
       method: "GET",
-      data: JSON.stringify(dateentity),
       headers: {
         "Content-Type": "application/json",
       },
     })
       .then((response) => {
-        const sortedDateentity = response.data.results.sort((a, b) => new Date(a.datetb) - new Date(b.datetb));
+        let filteredData = response.data.results;
+
+        if (selectedMonth !== "all") {
+          filteredData = filteredData.filter((item) => {
+            const date = new Date(item.datetb);
+            return date.getMonth() + 1 === parseInt(selectedMonth);
+          });
+        }
+
+        if (selectedYear !== "all") {
+          filteredData = filteredData.filter((item) => {
+            const date = new Date(item.datetb);
+            return date.getFullYear() === parseInt(selectedYear);
+          });
+        }
+
+        const sortedDateentity = filteredData.sort(
+          (a, b) => new Date(a.datetb) - new Date(b.datetb)
+        );
         setDateentity(sortedDateentity);
-        console.log(response);
         setLoading(false);
       })
       .catch((error) => {
         console.log(error);
+        setLoading(false);
       });
-    setLoading(true);
-  }, []);
+  }, [selectedMonth, selectedYear]);
+
   const getFormattedDate = (dateString) => {
     const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const dayIndex = new Date(dateString).getDay();
@@ -46,6 +66,7 @@ function ShowDate() {
 
     return `${dayName}, ${dd}-${mm}-${yyyy}`;
   };
+
   const updateHoliday = (dateentity, isholiday) => {
     axios({
       url: `http://localhost:8089/api/dateentity/${dateentity.id}`,
@@ -134,16 +155,16 @@ function ShowDate() {
             {getFormattedDate(dateentity.datetb)}
           </td>
           <td>
-          {isEditing ? (
-            <input
-              type="text"
-              value={editedDetail}
-              onChange={(e) => setEditedDetail(e.target.value)}
-            />
-          ) : (
-            dateentity.detail
-          )}
-        </td>
+            {isEditing ? (
+              <input
+                type="text"
+                value={editedDetail}
+                onChange={(e) => setEditedDetail(e.target.value)}
+              />
+            ) : (
+              dateentity.detail
+            )}
+          </td>
           <td style={{ color: textColor }}>{isHolidayText}</td>
           {localStorage.getItem("Role") !== "admin" ? null : (
             <td>
@@ -178,11 +199,58 @@ function ShowDate() {
     });
   };
 
+  const handleMonthChange = (event) => {
+    setSelectedMonth(event.target.value);
+  };
+
+  const handleYearChange = (event) => {
+    setSelectedYear(event.target.value);
+  };
+
+  const months = [
+    { value: "01", label: "January" },
+    { value: "02", label: "February" },
+    { value: "03", label: "March" },
+    { value: "04", label: "April" },
+    { value: "05", label: "May" },
+    { value: "06", label: "June" },
+    { value: "07", label: "July" },
+    { value: "08", label: "August" },
+    { value: "09", label: "September" },
+    { value: "10", label: "October" },
+    { value: "11", label: "November" },
+    { value: "12", label: "December" },
+  ];
+
+  const years = [];
+  for (let i = 2020; i <= new Date().getFullYear(); i++) {
+    years.push({ value: i.toString(), label: i.toString() });
+  }
+
   return (
     <div>
+      <div>
+        <label>Filter by Month: </label>
+        <select value={selectedMonth} onChange={handleMonthChange}>
+          <option value="all">All</option>
+          {months.map((month) => (
+            <option key={month.value} value={month.value}>
+              {month.label}
+            </option>
+          ))}
+        </select>
+        <label>Filter by Year: </label>
+        <select value={selectedYear} onChange={handleYearChange}>
+          <option value="all">All</option>
+          {years.map((year) => (
+            <option key={year.value} value={year.value}>
+              {year.label}
+            </option>
+          ))}
+        </select>
+      </div>
       <p style={{ color: "red" }}>
         <b>
-          {" "}
           <ClipLoader
             loading={loading}
             size={150}

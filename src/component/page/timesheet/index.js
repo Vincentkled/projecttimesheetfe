@@ -8,32 +8,6 @@ import { useNavigate } from "react-router-dom";
 
 const TimesheetForm = () => {
   const [dateentitys, setDateentitys] = useState([]);
-  
-  const getCurrentMonthDates = (dates) => {
-    const currentMonth = new Date().getMonth();
-    const currentYear = new Date().getFullYear();
-    return dates.filter(date => {
-      const dateObj = new Date(date.datetb);
-      return dateObj.getMonth() === currentMonth && dateObj.getFullYear() === currentYear;
-    });
-  };
-
-  useEffect(() => {
-    axios({
-      url: "http://localhost:8089/api/dateentity",
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      }
-    }).then((response) => {
-      const sortedDates = response.data.results.sort((a, b) => new Date(a.datetb) - new Date(b.datetb));
-      const currentMonthDates = getCurrentMonthDates(sortedDates);
-      setDateentitys(currentMonthDates);
-    }).catch((error) => {
-      console.log(error);
-    });
-  }, []);
-
   const [formData, setFormData] = useState({
     employee: {
       id: localStorage.getItem("Id"),
@@ -41,33 +15,52 @@ const TimesheetForm = () => {
     dateentity: {
       id: null,
     },
-    start_time: "",
-    end_time: "",
+    start_time: `${new Date().toISOString().split('T')[0]}T${new Date().toLocaleTimeString('en-GB').slice(0, 5)}`,
     activity: "",
     attendance: "",
     status: "Pending",
   });
-
   const [show, setShow] = useState(true);
   const navigate = useNavigate();
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
 
-  const resetForm = () => {
-    setFormData({
-      employee: {
-        id: "",
-      },
-      dateentity: {
-        id: "",
-      },
-      start_time: "",
-      end_time: "",
-      activity: "",
-      attendance: "",
-      status: "Pending",
-    });
-  };
+  useEffect(() => {
+    // Fetch dates from the API
+    axios.get("http://localhost:8089/api/dateentity")
+      .then(response => {
+        const todayDate = new Date().toISOString().split('T')[0];
+        console.log("Today Date:", todayDate); // Log today's date
+
+        const dates = response.data.results;
+
+        // Log all fetched dates
+        console.log("Fetched Dates:", dates);
+
+        // Find today's date in the fetched dates and get the corresponding date_id
+        const todayDateEntity = dates.find(date => {
+          const fetchedDate = date.datetb; // Directly use datetb from the response
+          console.log("Fetched Date:", fetchedDate); // Log fetched date for comparison
+          return fetchedDate === todayDate;
+        });
+
+        // Log the result of the search
+        console.log("Today's Date Entity:", todayDateEntity);
+
+        if (todayDateEntity) {
+          setFormData(prevData => ({
+            ...prevData,
+            dateentity: { id: todayDateEntity.id }, // Use id from the response
+            start_time: `${todayDateEntity.datetb}T${new Date().toLocaleTimeString('en-GB').slice(0, 5)}`,
+          }));
+        } else {
+          console.warn("Today's date not found in the fetched data.");
+        }
+
+        setDateentitys(dates);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -75,7 +68,6 @@ const TimesheetForm = () => {
       employee: formData.employee,
       dateentity: formData.dateentity,
       start_time: formData.start_time,
-      end_time: formData.end_time,
       activity: formData.activity,
       attendance: formData.attendance,
       status: formData.status,
@@ -90,9 +82,6 @@ const TimesheetForm = () => {
       },
     })
       .then((response) => {
-        setFormData({
-          ...formData,
-        });
         Swal.fire({
           position: "center",
           icon: "success",
@@ -108,72 +97,33 @@ const TimesheetForm = () => {
       });
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    if (name === "employee") {
-      setFormData({
-        ...formData,
-        employee: {
-          id: value,
-        },
-      });
-    } else if (name === "dateentity") {
-      const selectedDate = dateentitys.find(x => x.id === parseInt(value)).datetb;
-      const [startDate, startTime] = formData.start_time.split('T');
-      const [endDate, endTime] = formData.end_time.split('T');
-      setFormData({
-        ...formData,
-        dateentity: {
-          id: value,
-        },
-        start_time: `${selectedDate}T${startTime || '00:00'}`,
-        end_time: `${selectedDate}T${endTime || '00:00'}`,
-      });
-    } else if (name === "start_time") {
-      const [date] = formData.start_time.split('T');
-      setFormData({
-        ...formData,
-        start_time: `${date}T${value}`,
-        end_time: `${date}T${value < formData.end_time.split('T')[1] ? formData.end_time.split('T')[1] : value}`,
-      });
-    } else if (name === "end_time") {
-      const [date] = formData.end_time.split('T');
-      setFormData({
-        ...formData,
-        end_time: `${date}T${value}`,
-      });
-    } else {
-      setFormData({
-        ...formData,
-        [name]: value,
-      });
-    }
-  };
-
-  const formatDate = (dateStr) => {
-    const date = new Date(dateStr);
-    const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
-    return date.toLocaleDateString('id-ID', options);
-  };
-
-  const getDayOfWeek = (dateStr) => {
-    const date = new Date(dateStr);
-    return date.getDay();
+  const resetForm = () => {
+    setFormData({
+      employee: {
+        id: localStorage.getItem("Id"),
+      },
+      dateentity: {
+        id: null,
+      },
+      start_time: `${new Date().toISOString().split('T')[0]}T${new Date().toLocaleTimeString('en-GB').slice(0, 5)}`,
+      activity: "",
+      attendance: "",
+      status: "Pending",
+    });
   };
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow} style={{
+      <Button variant="primary" onClick={() => setShow(true)} style={{
         position: 'fixed',
         top: '25%',
         left: '50%',
         transform: 'translate(-20%, -20%)',
       }}>
-        Input Timesheet
+        Start Timesheet
       </Button>
 
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show} onHide={() => setShow(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Timesheet Form</Modal.Title>
         </Modal.Header>
@@ -185,32 +135,10 @@ const TimesheetForm = () => {
                 type="text"
                 name="employee"
                 value={formData.employee.id}
-                onChange={handleChange}
+                onChange={() => {}}
                 disabled
                 hidden
               ></Form.Control>
-            </Form.Group>
-
-            {/* Date */}
-            <Form.Group className="mb-3">
-              <Form.Label>Select Date</Form.Label>
-              <Form.Select
-                name="dateentity"
-                value={formData.dateentity.id}
-                onChange={handleChange}
-              >
-                <option disabled>Select Date </option>
-                {dateentitys.map((x) => (
-                  <option 
-                    value={x.id} 
-                    key={x.id} 
-                    style={{ color: getDayOfWeek(x.datetb) === 0 || getDayOfWeek(x.datetb) === 6 ? 'red' : 'black' }}
-                    disabled={getDayOfWeek(x.datetb) === 0 || getDayOfWeek(x.datetb) === 6}
-                  >
-                    {formatDate(x.datetb)}
-                  </option>
-                ))}
-              </Form.Select>
             </Form.Group>
 
             {/* Start Time */}
@@ -220,31 +148,24 @@ const TimesheetForm = () => {
                 type="time"
                 name="start_time"
                 value={formData.start_time.split('T')[1] || ''}
-                onChange={handleChange}
-              />
-            </Form.Group>
-
-            {/* End Time */}
-            <Form.Group className="mb-3">
-              <Form.Label>End Time</Form.Label>
-              <Form.Control
-                type="time"
-                name="end_time"
-                value={formData.end_time.split('T')[1] || ''}
-                onChange={handleChange}
+                onChange={() => {}}
+                readOnly
               />
             </Form.Group>
 
             {/* Activity */}
-            <Form.Group className="mb-3">
+            {/* <Form.Group className="mb-3">
               <Form.Label>Activity</Form.Label>
               <Form.Control
                 type="text"
                 name="activity"
                 value={formData.activity}
-                onChange={handleChange}
+                onChange={(e) => setFormData({
+                  ...formData,
+                  activity: e.target.value
+                })}
               />
-            </Form.Group>
+            </Form.Group> */}
 
             {/* Attendance */}
             <Form.Group className="mb-3">
@@ -252,7 +173,10 @@ const TimesheetForm = () => {
               <select
                 name="attendance"
                 value={formData.attendance}
-                onChange={handleChange}
+                onChange={(e) => setFormData({
+                  ...formData,
+                  attendance: e.target.value
+                })}
                 required
               >
                 <option disabled value="">
@@ -271,12 +195,12 @@ const TimesheetForm = () => {
                 type="text"
                 name="status"
                 value={formData.status}
-                onChange={handleChange}
+                onChange={() => {}}
                 hidden
               />
             </Form.Group>
 
-            <Button variant="secondary" onClick={handleClose}>
+            <Button variant="secondary" onClick={() => setShow(false)}>
               Close
             </Button>
             <Button type="submit" variant="primary">

@@ -47,7 +47,7 @@ const Layout = () => {
         <div>
           <aside style={{ maxWidth: show ? "300px" : "100px" }}>
             <div>
-              <Button onClick={() => setShow(!show)} variant="warning"></Button>
+              <Button onClick={() => setShow(!show)} variant="danger"></Button>
               {admin.map((link, index) => (
                 <section className="wrap" key={index}>
                   <Link to={link.to} className="icon-link">
